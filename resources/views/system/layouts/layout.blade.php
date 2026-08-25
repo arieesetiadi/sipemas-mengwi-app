@@ -29,16 +29,25 @@
     <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('assets/images/neptune.png') }}" />
 </head>
 
+@php
+    $isLoggedIn = auth('system')->check();
+    $admin = auth('system')->user();
+@endphp
+
 <body>
     <div class="app align-content-stretch d-flex flex-wrap">
         <div class="app-sidebar">
             <div class="logo">
-                <a href="index.html" class="logo-icon"><span class="logo-text">Neptune</span></a>
+                <a href="{{ route('system.dashboard') }}" class="logo-icon"><span class="logo-text">System</span></a>
                 <div class="sidebar-user-switcher user-activity-online">
                     <a href="#">
-                        <img src="{{ asset('assets/images/avatars/avatar.png') }}">
+                        <img src="{{ asset('assets/images/avatars/user.png') }}">
                         <span class="activity-indicator"></span>
-                        <span class="user-info-text">Chloe<br><span class="user-state-info">On a call</span></span>
+                        <span class="user-info-text">
+                            {{ $admin->nama ?? 'Admin' }}
+                            <br>
+                            <span class="user-state-info">{{ $admin->email ?? '' }}</span>
+                        </span>
                     </a>
                 </div>
             </div>
@@ -48,7 +57,7 @@
                         Apps
                     </li>
                     <li class="active-page">
-                        <a href="index.html" class="active"><i
+                        <a href="{{ route('system.dashboard') }}" class="active"><i
                                 class="material-icons-two-tone">dashboard</i>Dashboard</a>
                     </li>
                     <li>
@@ -330,13 +339,12 @@
                         </ul>
                     </li>
                     <li class="sidebar-title">
-                        Other
+                        Lainnya
                     </li>
                     <li>
-                        <a href="#"><i class="material-icons-two-tone">bookmark</i>Documentation</a>
-                    </li>
-                    <li>
-                        <a href="#"><i class="material-icons-two-tone">access_time</i>Change Log</a>
+                        <a href="{{ route('system.logout') }}" class="text-danger fw-bold">
+                            <i class="material-icons-two-tone">access_time</i>Logout
+                        </a>
                     </li>
                 </ul>
             </div>
