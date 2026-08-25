@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\Role as RoleEnum;
 use App\Models\Kependudukan;
 use App\Models\Role;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -36,5 +37,10 @@ class User extends Authenticatable
     public function kependudukan(): HasOne
     {
         return $this->hasOne(Kependudukan::class);
+    }
+
+    public function isMasyarakat(): bool
+    {
+        return $this->role?->label === RoleEnum::Masyarakat->value;
     }
 }

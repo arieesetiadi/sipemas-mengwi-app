@@ -42,6 +42,14 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+        'portal' => [
+            'driver' => 'session',
+            'provider' => 'users',
+        ],
+        'system' => [
+            'driver' => 'session',
+            'provider' => 'users',
+        ],
     ],
 
     /*
