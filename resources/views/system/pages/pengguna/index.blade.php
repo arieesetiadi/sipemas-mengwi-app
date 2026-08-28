@@ -55,15 +55,15 @@
                                             <td>{{ $pengguna->role?->label ?? '-' }}</td>
                                             <td>
                                                 @if ($pengguna->is_active)
-                                                    <span class="badge bg-success">Aktif</span>
+                                                    <span class="badge bg-success w-100 pt-2">Aktif</span>
                                                 @else
-                                                    <span class="badge bg-secondary">Nonaktif</span>
+                                                    <span class="badge bg-danger w-100 pt-2">Nonaktif</span>
                                                 @endif
                                             </td>
-                                            <td>
+                                            <td class="d-flex gap-2">
                                                 <a href="{{ route('system.pengguna.edit', $pengguna) }}"
                                                     class="btn btn-sm btn-light">Edit</a>
-                                                <button type="button" class="btn btn-sm {{ $pengguna->is_active ? 'btn-danger' : 'btn-success' }} btn-toggle-status"
+                                                <button type="button" class="btn btn-sm w-100 {{ $pengguna->is_active ? 'btn-danger' : 'btn-success' }} btn-toggle-status"
                                                     data-pengguna-id="{{ $pengguna->id }}"
                                                     data-pengguna-nama="{{ $pengguna->nama }}"
                                                     data-status="{{ $pengguna->is_active ? 'nonaktif' : 'aktif' }}">
@@ -96,7 +96,7 @@
                         <p id="status-modal-text"></p>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Batal</button>
                         <button type="submit" class="btn btn-primary" id="status-modal-submit">Ya</button>
                     </div>
                 </form>
@@ -109,7 +109,6 @@
     <script src="{{ asset('assets/plugins/datatables/datatables.min.js') }}"></script>
     <script>
         $(document).ready(function () {
-            // datatable client-side: search, sort, pagination semua di-handle browser
             $('#pengguna-table').DataTable({
                 lengthMenu: [10, 25, 50, 100],
                 pageLength: 10,
@@ -139,7 +138,7 @@
                 $('#status-form').attr('action', action);
                 $('#status-modal-text').text('Yakin ingin meng' + status + 'kan pengguna "' + penggunaNama + '"?');
 
-                new bootstrap.Modal($('#statusModal')).show();
+                new bootstrap.Modal(document.getElementById('statusModal')).show();
             });
         });
     </script>
