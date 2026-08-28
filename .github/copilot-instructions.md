@@ -87,3 +87,4 @@
 - Don't call `env()` outside config files.
 - Don't regenerate a full file for a small change — show the diff only.
 - Don't switch the project off jQuery/Bootstrap 5 unless explicitly asked.
+- Don't touch any css/js assets that contains .min (minified), since i will manually trigger the minifier from my internal extension.

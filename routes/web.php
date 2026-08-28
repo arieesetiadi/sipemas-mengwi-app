@@ -7,16 +7,17 @@ use App\Http\Controllers\System\LoginController;
 use App\Http\Controllers\System\LogoutController;
 use App\Http\Middleware\AuthenticateAdmin;
 use App\Http\Middleware\GuestAdmin;
+use App\Http\Middleware\MainHandler;
 
 // PORTAL (Masyarakat)
-Route::as('portal.')->group(function () {
+Route::as('portal.')->middleware(MainHandler::class)->group(function () {
     Route::get('/', [HomeController::class, 'index'])->name('home');
 });
 
 // ---------------------------------
 
 // SYSTEM (Admin/Internal)
-Route::prefix('system')->as('system.')->group(function () {
+Route::prefix('system')->as('system.')->middleware(MainHandler::class)->group(function () {
     Route::middleware(GuestAdmin::class)->group(function () {
         Route::get('/login', [LoginController::class, 'index'])->name('login.index');
         Route::post('/login', [LoginController::class, 'validate'])->name('login.validate');
