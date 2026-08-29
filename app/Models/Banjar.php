@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Models\Kependudukan;
+use App\Models\Penduduk;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
@@ -12,8 +12,8 @@ class Banjar extends Model
 
     protected $guarded = [];
 
-    public function kependudukan(): HasMany
+    public function penduduk(): HasMany
     {
-        return $this->hasMany(Kependudukan::class);
+        return $this->hasMany(Penduduk::class);
     }
 }

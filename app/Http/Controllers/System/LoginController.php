@@ -24,7 +24,7 @@ class LoginController extends Controller
 
         if ($guard->attemptWhen(
             $credentials,
-            fn (User $user) => ! $user->isMasyarakat(),
+            fn (User $user) => ! $user->isPenduduk(),
         )) {
             return to_route('system.dashboard');
         }

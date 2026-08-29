@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use App\Enums\Role as RoleEnum;
-use App\Models\Kependudukan;
+use App\Models\Penduduk;
 use App\Models\Role;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -35,19 +35,23 @@ class User extends Authenticatable
         return $this->belongsTo(Role::class);
     }
 
-    public function kependudukan(): HasOne
+    public function penduduk(): HasOne
     {
-        return $this->hasOne(Kependudukan::class);
+        return $this->hasOne(Penduduk::class);
     }
 
-    public function isMasyarakat(): bool
+    public function isPenduduk(): bool
     {
-        return $this->role?->label === RoleEnum::Masyarakat->value;
+        return $this->role?->label === RoleEnum::Penduduk->value;
     }
 
-    // ambil user internal aja (bukan Masyarakat) buat modul Pengguna
-    public function scopeSystem(Builder $query): Builder
+    public function scopeAdmin(Builder $query): Builder
     {
-        return $query->whereHas('role', fn (Builder $q) => $q->whereNot('label', RoleEnum::Masyarakat->value));
+        return $query->whereHas('role', fn (Builder $q) => $q->whereNot('label', RoleEnum::Penduduk->value));
+    }
+
+    public function scopePendudukUser(Builder $query): Builder
+    {
+        return $query->whereHas('role', fn (Builder $q) => $q->where('label', RoleEnum::Penduduk->value));
     }
 }

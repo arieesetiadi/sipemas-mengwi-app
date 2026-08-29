@@ -7,9 +7,9 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Kependudukan extends Model
+class Penduduk extends Model
 {
-    protected $table = 'kependudukan';
+    protected $table = 'penduduk';
 
     protected $guarded = [];
 

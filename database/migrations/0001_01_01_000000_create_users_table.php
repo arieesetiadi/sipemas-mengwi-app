@@ -35,7 +35,7 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        Schema::create('kependudukan', function (Blueprint $table) {
+        Schema::create('penduduk', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->nullable()->constrained('users', 'id')->cascadeOnDelete();
             $table->foreignId('banjar_id')->nullable()->constrained('banjar', 'id')->nullOnDelete();
@@ -59,7 +59,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('kependudukan');
+        Schema::dropIfExists('penduduk');
         Schema::dropIfExists('sessions');
         Schema::dropIfExists('users');
         Schema::dropIfExists('banjar');

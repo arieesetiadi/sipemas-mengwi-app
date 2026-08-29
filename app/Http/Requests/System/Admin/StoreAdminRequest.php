@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\System\Pengguna;
+namespace App\Http\Requests\System\Admin;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdatePenggunaRequest extends FormRequest
+class StoreAdminRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -14,13 +14,6 @@ class UpdatePenggunaRequest extends FormRequest
         return true;
     }
 
-    protected function prepareForValidation(): void
-    {
-        if (! $this->filled('password')) {
-            $this->request->remove('password');
-        }
-    }
-
     /**
      * Get the validation rules that apply to the request.
      *
@@ -28,14 +21,12 @@ class UpdatePenggunaRequest extends FormRequest
      */
     public function rules(): array
     {
-        $penggunaId = $this->route('pengguna')->id;
-
         return [
             'nama' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'email', 'unique:users,email,' . $penggunaId],
-            'telepon' => ['nullable', 'string', 'max:20', 'unique:users,telepon,' . $penggunaId],
+            'email' => ['required', 'email', 'unique:users,email'],
+            'telepon' => ['nullable', 'string', 'max:20', 'unique:users,telepon'],
             'role_id' => ['required', 'exists:roles,id'],
-            'password' => ['sometimes', 'nullable', 'string', 'min:8'],
+            'password' => ['required', 'string', 'min:8'],
             'is_active' => ['nullable', 'boolean'],
         ];
     }
@@ -51,6 +42,7 @@ class UpdatePenggunaRequest extends FormRequest
             'telepon.unique' => 'Nomor telepon sudah dipakai user lain.',
             'role_id.required' => 'Role wajib dipilih.',
             'role_id.exists' => 'Role yang dipilih tidak valid.',
+            'password.required' => 'Password wajib diisi.',
             'password.min' => 'Password minimal 8 karakter.',
         ];
     }

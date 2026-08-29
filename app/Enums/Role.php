@@ -7,7 +7,7 @@ enum Role: string
     case Perbekel = 'Perbekel';
     case Sekretaris = 'Sekretaris';
     case Staf = 'Staf';
-    case Masyarakat = 'Masyarakat';
+    case Penduduk = 'Penduduk';
 
     public static function values(): array
     {

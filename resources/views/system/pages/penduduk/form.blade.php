@@ -1,10 +1,10 @@
 @extends('system.layouts.layout')
 
 @php
-    $isEdit = isset($pengguna);
-    $routeAction = $isEdit ? route('system.pengguna.update', $pengguna) : route('system.pengguna.store');
+    $isEdit = isset($penduduk);
+    $routeAction = $isEdit ? route('system.penduduk.update', $penduduk) : route('system.penduduk.store');
     $method = $isEdit ? 'PUT' : 'POST';
-    $title = $isEdit ? 'Edit Pengguna' : 'Tambah Pengguna';
+    $title = $isEdit ? 'Edit Penduduk' : 'Tambah Penduduk';
 @endphp
 
 @section('content')
@@ -14,7 +14,7 @@
                 <div class="col">
                     <div class="page-description d-flex justify-content-between align-items-center">
                         <h1>{{ $title }}</h1>
-                        <a href="{{ route('system.pengguna.index') }}" class="btn btn-light">
+                        <a href="{{ route('system.penduduk.index') }}" class="btn btn-light">
                             <i class="material-icons">arrow_back</i> Kembali
                         </a>
                     </div>
@@ -35,14 +35,14 @@
                 <div class="col">
                     <div class="card">
                         <div class="card-body">
-                            <form id="pengguna-form" action="{{ $routeAction }}" method="POST">
+                            <form id="penduduk-form" action="{{ $routeAction }}" method="POST">
                                 @csrf
                                 @method($method)
 
                                 <div class="mb-3">
                                     <label for="nama" class="form-label">Nama <span class="text-danger">*</span></label>
                                     <input type="text" name="nama" id="nama" class="form-control @error('nama') is-invalid @enderror"
-                                        value="{{ old('nama', $pengguna->nama ?? '') }}" placeholder="Nama lengkap pengguna">
+                                        value="{{ old('nama', $penduduk->nama ?? '') }}" placeholder="Nama lengkap penduduk">
                                     @error('nama')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
@@ -52,7 +52,7 @@
                                     <div class="col-md-6 mb-3">
                                         <label for="email" class="form-label">Email <span class="text-danger">*</span></label>
                                         <input type="email" name="email" id="email" class="form-control @error('email') is-invalid @enderror"
-                                            value="{{ old('email', $pengguna->email ?? '') }}" placeholder="email@contoh.com">
+                                            value="{{ old('email', $penduduk->email ?? '') }}" placeholder="email@contoh.com">
                                         @error('email')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
@@ -60,7 +60,7 @@
                                     <div class="col-md-6 mb-3">
                                         <label for="telepon" class="form-label">Telepon</label>
                                         <input type="text" name="telepon" id="telepon" class="form-control @error('telepon') is-invalid @enderror"
-                                            value="{{ old('telepon', $pengguna->telepon ?? '') }}" placeholder="08xxxxxxxxxx">
+                                            value="{{ old('telepon', $penduduk->telepon ?? '') }}" placeholder="08xxxxxxxxxx">
                                         @error('telepon')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
@@ -69,21 +69,40 @@
 
                                 <div class="row">
                                     <div class="col-md-6 mb-3">
-                                        <label for="role_id" class="form-label">Role <span class="text-danger">*</span></label>
-                                        <select name="role_id" id="role_id" class="form-select @error('role_id') is-invalid @enderror">
-                                            <option value="">-- Pilih Role --</option>
-                                            @foreach ($roles as $role)
-                                                <option value="{{ $role->id }}"
-                                                    {{ old('role_id', $pengguna->role_id ?? '') == $role->id ? 'selected' : '' }}>
-                                                    {{ $role->label }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                        @error('role_id')
+                                        <label for="nik" class="form-label">NIK <span class="text-danger">*</span></label>
+                                        <input type="text" name="nik" id="nik" class="form-control @error('nik') is-invalid @enderror"
+                                            value="{{ old('nik', $penduduk->penduduk?->nik ?? '') }}" placeholder="16 digit NIK">
+                                        @error('nik')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
                                     </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="banjar_id" class="form-label">Banjar <span class="text-danger">*</span></label>
+                                        <select name="banjar_id" id="banjar_id" class="form-select @error('banjar_id') is-invalid @enderror">
+                                            <option value="">-- Pilih Banjar --</option>
+                                            @foreach ($banjar as $banjar)
+                                                <option value="{{ $banjar->id }}"
+                                                    {{ old('banjar_id', $penduduk->penduduk?->banjar_id ?? '') == $banjar->id ? 'selected' : '' }}>
+                                                    {{ $banjar->label }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                        @error('banjar_id')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
 
+                                <div class="mb-3">
+                                    <label for="alamat" class="form-label">Alamat <span class="text-danger">*</span></label>
+                                    <textarea name="alamat" id="alamat" rows="2" class="form-control @error('alamat') is-invalid @enderror"
+                                        placeholder="Alamat lengkap">{{ old('alamat', $penduduk->penduduk?->alamat ?? '') }}</textarea>
+                                    @error('alamat')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <div class="row">
                                     <div class="col-md-6 mb-3">
                                         <div class="d-flex gap-2">
                                             <label for="password" class="form-label">Password
@@ -107,13 +126,13 @@
                                     <input type="hidden" name="is_active" value="0">
                                     <input type="checkbox" name="is_active" id="is_active" value="1"
                                         class="form-check-input"
-                                        {{ old('is_active', $pengguna->is_active ?? true) ? 'checked' : '' }}>
+                                        {{ old('is_active', $penduduk->is_active ?? true) ? 'checked' : '' }}>
                                     <label for="is_active" class="form-check-label">Aktif</label>
                                 </div>
 
                                 <div class="d-flex gap-2">
                                     <button type="submit" class="btn btn-primary">Simpan</button>
-                                    <a href="{{ route('system.pengguna.index') }}" class="btn btn-light">Batal</a>
+                                    <a href="{{ route('system.penduduk.index') }}" class="btn btn-light">Batal</a>
                                 </div>
                             </form>
                         </div>
@@ -128,7 +147,8 @@
     <script src="{{ asset('assets/plugins/jquery-validate/jquery.validate.min.js') }}"></script>
     <script>
         $(document).ready(function () {
-            $('#pengguna-form').validate({
+            // validasi form di sisi client, rule-nya nyamain backend
+            $('#penduduk-form').validate({
                 rules: {
                     nama: {
                         required: true,
@@ -138,8 +158,18 @@
                         required: true,
                         email: true
                     },
-                    role_id: {
+                    nik: {
+                        required: true,
+                        digits: true,
+                        minlength: 16,
+                        maxlength: 16
+                    },
+                    banjar_id: {
                         required: true
+                    },
+                    alamat: {
+                        required: true,
+                        maxlength: 255
                     },
                     password: {
                         @if (!$isEdit)
@@ -157,8 +187,18 @@
                         required: 'Email wajib diisi.',
                         email: 'Format email tidak valid.'
                     },
-                    role_id: {
-                        required: 'Role wajib dipilih.'
+                    nik: {
+                        required: 'NIK wajib diisi.',
+                        digits: 'NIK harus angka.',
+                        minlength: 'NIK harus 16 digit.',
+                        maxlength: 'NIK harus 16 digit.'
+                    },
+                    banjar_id: {
+                        required: 'Banjar wajib dipilih.'
+                    },
+                    alamat: {
+                        required: 'Alamat wajib diisi.',
+                        maxlength: 'Alamat maksimal 255 karakter.'
                     },
                     password: {
                         required: 'Password wajib diisi.',
@@ -175,6 +215,7 @@
                 }
             });
 
+            // toggle buat liat/sembunyiin password
             $('#toggle-password').on('click', function () {
                 var input = $('#password');
                 var icon = $(this).find('i');

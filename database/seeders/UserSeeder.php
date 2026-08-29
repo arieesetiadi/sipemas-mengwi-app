@@ -4,7 +4,7 @@ namespace Database\Seeders;
 
 use App\Enums\Role as RoleEnum;
 use App\Models\Banjar;
-use App\Models\Kependudukan;
+use App\Models\Penduduk;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Database\Seeder;
@@ -27,7 +27,7 @@ class UserSeeder extends Seeder
             ['Perbekel', 'perbekel@desa.test', RoleEnum::Perbekel],
             ['Sekretaris', 'sekretaris@desa.test', RoleEnum::Sekretaris],
             ['Staf', 'staf@desa.test', RoleEnum::Staf],
-            ['I Putu Roberto', 'masyarakat@desa.test', RoleEnum::Masyarakat],
+            ['I Putu Roberto', 'penduduk@desa.test', RoleEnum::Penduduk],
         ];
 
         foreach ($accounts as [$nama, $email, $role]) {
@@ -41,8 +41,8 @@ class UserSeeder extends Seeder
                 ]
             );
 
-            if ($role === RoleEnum::Masyarakat) {
-                Kependudukan::firstOrCreate(
+            if ($role === RoleEnum::Penduduk) {
+                Penduduk::firstOrCreate(
                     ['nik' => '0000000000000000'],
                     [
                         'user_id' => $user->id,

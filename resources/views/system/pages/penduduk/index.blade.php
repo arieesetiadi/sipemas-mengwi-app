@@ -10,9 +10,9 @@
             <div class="row">
                 <div class="col">
                     <div class="page-description d-flex justify-content-between align-items-center">
-                        <h1>Data Pengguna</h1>
-                        <a href="{{ route('system.pengguna.create') }}" class="btn btn-primary">
-                            <i class="material-icons">add</i> Tambah Pengguna
+                        <h1>Data Penduduk</h1>
+                        <a href="{{ route('system.penduduk.create') }}" class="btn btn-primary">
+                            <i class="material-icons">add</i> Tambah Penduduk
                         </a>
                     </div>
                 </div>
@@ -35,39 +35,41 @@
                 <div class="col">
                     <div class="card">
                         <div class="card-body">
-                            <table id="pengguna-table" class="table w-100">
+                            <table id="penduduk-table" class="table w-100">
                                 <thead>
                                     <tr>
                                         <th>Nama</th>
+                                        <th>NIK</th>
                                         <th>Email</th>
                                         <th>Telepon</th>
-                                        <th>Role</th>
+                                        <th>Banjar</th>
                                         <th>Status</th>
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($pengguna as $pengguna)
+                                    @foreach ($penduduk as $penduduk)
                                         <tr>
-                                            <td>{{ $pengguna->nama }}</td>
-                                            <td>{{ $pengguna->email }}</td>
-                                            <td>{{ $pengguna->telepon ?? '-' }}</td>
-                                            <td>{{ $pengguna->role?->label ?? '-' }}</td>
+                                            <td>{{ $penduduk->nama }}</td>
+                                            <td>{{ $penduduk->penduduk?->nik ?? '-' }}</td>
+                                            <td>{{ $penduduk->email }}</td>
+                                            <td>{{ $penduduk->telepon ?? '-' }}</td>
+                                            <td>{{ $penduduk->penduduk?->banjar?->label ?? '-' }}</td>
                                             <td>
-                                                @if ($pengguna->is_active)
+                                                @if ($penduduk->is_active)
                                                     <span class="badge bg-success w-100 pt-2">Aktif</span>
                                                 @else
                                                     <span class="badge bg-danger w-100 pt-2">Nonaktif</span>
                                                 @endif
                                             </td>
                                             <td class="d-flex gap-2">
-                                                <a href="{{ route('system.pengguna.edit', $pengguna) }}"
+                                                <a href="{{ route('system.penduduk.edit', $penduduk) }}"
                                                     class="btn btn-sm btn-light">Edit</a>
-                                                <button type="button" class="btn btn-sm w-100 {{ $pengguna->is_active ? 'btn-danger' : 'btn-success' }} btn-toggle-status"
-                                                    data-pengguna-id="{{ $pengguna->id }}"
-                                                    data-pengguna-nama="{{ $pengguna->nama }}"
-                                                    data-status="{{ $pengguna->is_active ? 'nonaktif' : 'aktif' }}">
-                                                    {{ $pengguna->is_active ? 'Nonaktifkan' : 'Aktifkan' }}
+                                                <button type="button" class="btn btn-sm w-100 {{ $penduduk->is_active ? 'btn-danger' : 'btn-success' }} btn-toggle-status"
+                                                    data-penduduk-id="{{ $penduduk->id }}"
+                                                    data-penduduk-nama="{{ $penduduk->nama }}"
+                                                    data-status="{{ $penduduk->is_active ? 'nonaktif' : 'aktif' }}">
+                                                    {{ $penduduk->is_active ? 'Nonaktifkan' : 'Aktifkan' }}
                                                 </button>
                                             </td>
                                         </tr>
@@ -109,7 +111,8 @@
     <script src="{{ asset('assets/plugins/datatables/datatables.min.js') }}"></script>
     <script>
         $(document).ready(function () {
-            $('#pengguna-table').DataTable({
+            // datatable client-side: search, sort, pagination semua di-handle browser
+            $('#penduduk-table').DataTable({
                 lengthMenu: [10, 25, 50, 100],
                 pageLength: 10,
                 order: [[0, 'asc']],
@@ -130,14 +133,15 @@
             });
 
             $('.btn-toggle-status').on('click', function () {
-                var penggunaId = $(this).data('pengguna-id');
-                var penggunaNama = $(this).data('pengguna-nama');
+                var pendudukId = $(this).data('penduduk-id');
+                var pendudukNama = $(this).data('penduduk-nama');
                 var status = $(this).data('status');
-                var action = "{{ route('system.pengguna.status', ':id') }}".replace(':id', penggunaId);
+                var action = "{{ route('system.penduduk.status', ':id') }}".replace(':id', pendudukId);
 
                 $('#status-form').attr('action', action);
-                $('#status-modal-text').text('Yakin ingin meng' + status + 'kan pengguna "' + penggunaNama + '"?');
+                $('#status-modal-text').text('Yakin ingin meng' + status + 'kan penduduk "' + pendudukNama + '"?');
 
+                // pake elemen DOM asli, bukan jQuery object, biar nggak Illegal invocation
                 new bootstrap.Modal(document.getElementById('statusModal')).show();
             });
         });

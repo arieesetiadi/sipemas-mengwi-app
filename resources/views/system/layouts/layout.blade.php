@@ -108,10 +108,16 @@
                         </ul>
                     </li>
                     <li class="sidebar-title">Data Master</li>
-                    <li class="{{ request()->routeIs('system.pengguna.*') ? 'active-page' : '' }}">
-                        <a href="{{ route('system.pengguna.index') }}" class="{{ request()->routeIs('system.pengguna.*') ? 'active' : '' }}">
-                            <i class="material-icons-two-tone">star</i>
-                            Pengguna
+                    <li class="{{ request()->routeIs('system.admin.*') ? 'active-page' : '' }}">
+                        <a href="{{ route('system.admin.index') }}" class="{{ request()->routeIs('system.admin.*') ? 'active' : '' }}">
+                            <i class="material-icons-two-tone">group</i>
+                            Admin
+                        </a>
+                    </li>
+                    <li class="{{ request()->routeIs('system.penduduk.*') ? 'active-page' : '' }}">
+                        <a href="{{ route('system.penduduk.index') }}" class="{{ request()->routeIs('system.penduduk.*') ? 'active' : '' }}">
+                            <i class="material-icons-two-tone">people</i>
+                            Penduduk
                         </a>
                     </li>
                     <li class="sidebar-title">Lainnya</li>
