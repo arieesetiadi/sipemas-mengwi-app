@@ -29,6 +29,33 @@
     <link href="{{ asset('assets/css/horizontal-menu/horizontal-menu.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/css/custom.css') }}" rel="stylesheet">
 
+    <style>
+        /* #userDropDown:hover {
+            color: inherit;
+            background-color: transparent;
+        }
+        .dropdown-menu .dropdown-item.text-danger:hover {
+            background-color: transparent;
+        } */
+
+        #userDropDown + .dropdown-menu {
+            margin-top: 0;
+        }
+
+        #userDropDown + .dropdown-menu.show {
+            top: 100% !important;
+        }
+
+        /* tombol Keluar: font normal statis & tanpa efek hover */
+        #userDropDown + .dropdown-menu .dropdown-item.text-danger {
+            font-weight: normal;
+        }
+
+        #userDropDown + .dropdown-menu .dropdown-item.text-danger:hover {
+            background-color: transparent !important;
+        }
+    </style>
+
     <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('assets/images/neptune.png') }}" />
     <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('assets/images/neptune.png') }}" />
 </head>
@@ -47,7 +74,7 @@
                     <div class="container-fluid">
                         <div class="navbar-nav" id="navbarNav">
                             <div class="logo">
-                                <a href="index.html">Neptune</a>
+                                <a href="{{ route('portal.home') }}">SIPEMAS Mengwi</a>
                             </div>
                             <ul class="navbar-nav">
                                 <li class="nav-item">
@@ -219,6 +246,26 @@
                                         </div>
                                     </div>
                                 </li>
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle text-white" href="#" id="userDropDown">
+                                        <i class="material-icons-outlined">account_circle</i>
+                                        {{ auth('portal')->user()->nama }}
+                                    </a>
+                                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropDown">
+                                        <li>
+                                            <span class="dropdown-item-text">
+                                                <strong>{{ auth('portal')->user()->nama }}</strong><br>
+                                                <small>{{ auth('portal')->user()->email }}</small>
+                                            </span>
+                                        </li>
+                                        <li><hr class="dropdown-divider"></li>
+                                        <li>
+                                            <a class="dropdown-item text-danger align-items-center d-flex gap-2" href="{{ route('portal.logout') }}">
+                                                <i class="material-icons-outlined">logout</i> Keluar
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
                             </ul>
                         </div>
                     </div>
@@ -229,7 +276,7 @@
                 <div class="container">
                     <ul class="menu-list">
                         <li class="active-page">
-                            <a href="index.html" class="active">Dashboard</a>
+                            <a href="{{ route('portal.home') }}" class="active">Dashboard</a>
                         </li>
                         <li>
                             <a href="#">Apps<i class="material-icons has-sub-menu">keyboard_arrow_down</i></a>
@@ -476,7 +523,25 @@
     <script src="{{ asset('assets/plugins/apexcharts/apexcharts.min.js') }}"></script>
     <script src="{{ asset('assets/js/main.min.js') }}"></script>
     <script src="{{ asset('assets/js/custom.js') }}"></script>
-    <script src="{{ asset('assets/js/pages/dashboard.js') }}"></script>
+    <script>
+        // dropdown user buka pas hover; ada delay biar nggak flicker pas pindah trigger <-> menu
+        $(document).ready(function () {
+            var $userMenu = $('#userDropDown').closest('.nav-item');
+            var closeTimer;
+
+            $('#userDropDown, #userDropDown + .dropdown-menu').on('mouseenter', function () {
+                clearTimeout(closeTimer);
+                $userMenu.addClass('show');
+                $userMenu.find('.dropdown-menu').addClass('show');
+            }).on('mouseleave', function () {
+                clearTimeout(closeTimer);
+                closeTimer = setTimeout(function () {
+                    $userMenu.removeClass('show');
+                    $userMenu.find('.dropdown-menu').removeClass('show');
+                }, 200);
+            });
+        });
+    </script>
 </body>
 
 </html>

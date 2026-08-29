@@ -1,6 +1,6 @@
-@extends('system.layouts.auth')
+@extends('portal.layouts.auth')
 
-@section('title', 'Masuk - Sistem Admin SIPEMAS Mengwi')
+@section('title', 'Masuk - Portal Penduduk SIPEMAS Mengwi')
 
 @section('content')
     <div class="app app-auth-sign-in align-content-stretch d-flex flex-wrap justify-content-end">
@@ -10,11 +10,11 @@
                 <a href="{{ route('portal.home') }}">SIPEMAS Mengwi</a>
             </div>
             <div class="d-flex justify-content-start">
-                <span class="badge d-inline-block bg-danger mt-4 py-1 px-4">ADMIN DESA</span>
+                <span class="badge d-inline-block bg-primary mt-4 py-1 px-4">PORTAL Penduduk</span>
             </div>
             <p class="auth-description">
-                Selamat datang di halaman administrasi SIPEMAS Mengwi.<br>
-                Silakan masuk untuk mengelola data desa.
+                Selamat datang di Portal Penduduk SIPEMAS Mengwi.<br>
+                Silakan masuk untuk mengakses layanan penduduk.
             </p>
 
             @if ($errors->any())
@@ -27,17 +27,17 @@
                 </div>
             @endif
 
-            <form action="{{ route('system.login.validate') }}" method="POST">
+            <form action="{{ route('portal.login.validate') }}" method="POST">
                 @csrf
 
                 <div class="auth-credentials m-b-xxl">
                     <label for="email" class="form-label">Alamat Email</label>
                     <input type="email" name="email" class="form-control m-b-md" id="email"
-                        placeholder="contoh@desa.test" value="{{ old('email', 'staf@desa.test') }}" required autofocus>
+                        placeholder="contoh@desa.test" value="{{ old('email', 'penduduk@desa.test') }}" required autofocus>
 
                     <label for="password" class="form-label">Kata Sandi</label>
                     <input type="password" name="password" class="form-control" id="password"
-                        placeholder="&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;" value="staf" required>
+                        placeholder="&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;" value="i putu roberto" required>
                 </div>
 
                 <div class="auth-submit">
