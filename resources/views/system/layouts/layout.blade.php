@@ -122,8 +122,8 @@
                     </li>
                     <li class="sidebar-title">Lainnya</li>
                     <li>
-                        <a href="{{ route('system.logout') }}" class="text-danger fw-bold">
-                            <i class="material-icons-two-tone">access_time</i>Logout
+                        <a href="{{ route('system.logout') }}" class="fw-bold">
+                            <i class="material-icons-two-tone">logout</i>Logout
                         </a>
                     </li>
                 </ul>
