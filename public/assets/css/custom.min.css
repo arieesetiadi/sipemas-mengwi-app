@@ -1,0 +1,1 @@
+label.required::after{content:" *";color:red;}.is-invalid{color:#FF4857;margin-top:.25rem;font-size:12px;font-weight:400;display:block;margin-bottom:0;}

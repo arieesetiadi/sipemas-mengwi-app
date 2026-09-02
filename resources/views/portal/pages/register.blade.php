@@ -1,6 +1,6 @@
 @extends('portal.layouts.auth')
 
-@section('title', 'Masuk - Portal Penduduk SIPEMAS Mengwi')
+@section('title', 'Daftar - Portal Penduduk SIPEMAS Mengwi')
 
 @section('content')
     <div class="app app-auth-sign-in align-content-stretch d-flex flex-wrap justify-content-end">
@@ -13,8 +13,8 @@
                 <span class="badge d-inline-block bg-primary mt-4 py-1 px-4">PORTAL Penduduk</span>
             </div>
             <p class="auth-description">
-                Selamat datang di Portal Penduduk SIPEMAS Mengwi.<br>
-                Silakan masuk untuk mengakses layanan penduduk.
+                Daftar akun penduduk untuk mengakses layanan Portal Penduduk.<br>
+                Isi data di bawah sesuai identitas Anda.
             </p>
 
             @if ($errors->any())
@@ -27,31 +27,47 @@
                 </div>
             @endif
 
-            <form action="{{ route('portal.login.validate') }}" method="POST" id="loginForm" novalidate>
+            <form action="{{ route('portal.register.store') }}" method="POST" id="registerForm" novalidate>
                 @csrf
-
                 <div class="auth-credentials m-b-xxl">
+                    <div class="m-b-md">
+                        <label for="nama" class="form-label required">Nama Lengkap</label>
+                        <input type="text" name="nama" class="form-control" id="nama"
+                            placeholder="Nama lengkap Anda" value="{{ old('nama') }}" required autofocus>
+                    </div>
+
                     <div class="m-b-md">
                         <label for="email" class="form-label required">Alamat Email</label>
                         <input type="email" name="email" class="form-control" id="email"
-                            placeholder="contoh@desa.test" value="{{ old('email', 'penduduk@desa.test') }}" required autofocus>
+                            placeholder="contoh@desa.test" value="{{ old('email') }}" required>
+                    </div>
+
+                    <div class="m-b-md">
+                        <label for="telepon" class="form-label">Nomor Telepon <span class="text-muted">(opsional)</span></label>
+                        <input type="text" name="telepon" class="form-control" id="telepon"
+                            placeholder="08xxxxxxxxxx" value="{{ old('telepon') }}" maxlength="20">
+                    </div>
+
+                    <div class="m-b-md">
+                        <label for="password" class="form-label required">Kata Sandi</label>
+                        <input type="password" name="password" class="form-control" id="password"
+                            placeholder="Minimal 8 karakter" required>
                     </div>
 
                     <div>
-                        <label for="password" class="form-label required">Kata Sandi</label>
-                        <input type="password" name="password" class="form-control" id="password"
-                            placeholder="&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;" value="i putu roberto" required>
+                        <label for="password_confirmation" class="form-label required">Konfirmasi Kata Sandi</label>
+                        <input type="password" name="password_confirmation" class="form-control" id="password_confirmation"
+                            placeholder="Ulangi kata sandi" required>
                     </div>
                 </div>
 
                 <div class="auth-submit">
-                    <button type="submit" class="btn btn-primary">Masuk</button>
-                    {{-- <a href="#" class="auth-forgot-password float-end">Lupa kata sandi?</a> --}}
+                    <button type="submit" class="btn btn-primary">Daftar</button>
                 </div>
             </form>
 
             <div class="text-center mt-5">
-                Belum memiliki akun? <a href="{{ route('portal.register.index') }}">Daftar</a>
+                Sudah memiliki akun? <a href="{{ route('portal.login.index') }}">Masuk</a>
             </div>
         </div>
     </div>
@@ -62,14 +78,22 @@
     <script src="{{ asset('assets/plugins/jquery-validate/additional-methods.min.js') }}"></script>
     <script>
         $(document).ready(function() {
-            $('#loginForm').validate({
+            $('#registerForm').validate({
                 rules: {
+                    nama: { required: true, maxlength: 255 },
                     email: { required: true, email: true },
-                    password: { required: true }
+                    telepon: { maxlength: 20 },
+                    password: { required: true, minlength: 8 },
+                    password_confirmation: { required: true, equalTo: '#password' }
                 },
                 messages: {
+                    nama: { required: 'Nama lengkap wajib diisi.' },
                     email: { required: 'Alamat email wajib diisi.', email: 'Format email tidak valid.' },
-                    password: { required: 'Kata sandi wajib diisi.' }
+                    password: { required: 'Kata sandi wajib diisi.', minlength: 'Kata sandi minimal 8 karakter.' },
+                    password_confirmation: {
+                        required: 'Konfirmasi kata sandi wajib diisi.',
+                        equalTo: 'Konfirmasi kata sandi tidak cocok.'
+                    }
                 },
                 errorClass: 'is-invalid',
                 validClass: 'is-valid',

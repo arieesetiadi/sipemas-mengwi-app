@@ -26,7 +26,7 @@ class LoginController extends Controller
             $credentials,
             fn (User $user) => $user->isPenduduk() && $user->is_active,
         )) {
-            return to_route('portal.home');
+            return to_route('portal.home')->with('toast', 'Selamat datang kembali, ' . $guard->user()->nama . '!');
         }
 
         return back()

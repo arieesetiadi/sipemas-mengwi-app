@@ -23,6 +23,8 @@
     <link href="{{ asset('assets/plugins/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/plugins/perfectscroll/perfect-scrollbar.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/plugins/pace/pace.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/plugins/sweetalert2/sweetalert2.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/plugins/toastify/toastify.min.css') }}" rel="stylesheet">
 
     <!-- Theme Styles -->
     <link href="{{ asset('assets/css/main.min.css') }}" rel="stylesheet">
@@ -84,8 +86,9 @@
                                 <li class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle text-white" href="#" id="userDropDown"
                                         data-bs-toggle="dropdown">
-                                        <div class="d-flex gap-2 align-items-center">
-                                            <i class="material-icons-outlined" style="width: 35px; height: 35px; font-size: 35px;">account_circle</i>
+                                        <div class="d-flex align-items-center gap-2">
+                                            <i class="material-icons-outlined"
+                                                style="width: 35px; height: 35px; font-size: 35px;">account_circle</i>
                                             <span class="d-inline-block">{{ auth('portal')->user()->nama }}</span>
                                         </div>
                                     </a>
@@ -100,8 +103,7 @@
                                             <hr class="dropdown-divider">
                                         </li>
                                         <li>
-                                            <a class="dropdown-item align-items-center d-flex gap-2"
-                                                href="#">
+                                            <a class="dropdown-item align-items-center d-flex gap-2" href="#">
                                                 Edit Profil
                                             </a>
                                         </li>
@@ -151,13 +153,21 @@
         </div>
     </div>
 
+    <script>
+        const baseUrl = "{{ url('/') }}";
+        const csrfToken = "{{ csrf_token() }}";
+        const toastText = `{{ session('toast') }}`;
+    </script>
+
     <script src="{{ asset('assets/plugins/jquery/jquery-3.5.1.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/toastify/toastify-js.min.js') }}"></script>
     <script src="{{ asset('assets/plugins/bootstrap/js/bootstrap.min.js') }}"></script>
     <script src="{{ asset('assets/plugins/perfectscroll/perfect-scrollbar.min.js') }}"></script>
     <script src="{{ asset('assets/plugins/pace/pace.min.js') }}"></script>
     <script src="{{ asset('assets/plugins/apexcharts/apexcharts.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/sweetalert2/sweetalert2.min.js') }}"></script>
     <script src="{{ asset('assets/js/main.min.js') }}"></script>
-    <script src="{{ asset('assets/js/custom.js') }}"></script>
+    <script src="{{ asset('assets/js/custom.min.js') }}"></script>
 </body>
 
 </html>

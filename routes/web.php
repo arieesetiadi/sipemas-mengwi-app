@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Portal\HomeController;
 use App\Http\Controllers\Portal\LoginController;
 use App\Http\Controllers\Portal\LogoutController;
+use App\Http\Controllers\Portal\RegisterController;
 use App\Http\Controllers\System\AdminController;
 use App\Http\Controllers\System\DashboardController;
 use App\Http\Controllers\System\LoginController as SystemLoginController;
@@ -20,6 +21,9 @@ Route::as('portal.')->middleware(MainHandler::class)->group(function () {
     Route::middleware(GuestPortal::class)->group(function () {
         Route::get('/login', [LoginController::class, 'index'])->name('login.index');
         Route::post('/login', [LoginController::class, 'validate'])->name('login.validate');
+
+        Route::get('/register', [RegisterController::class, 'index'])->name('register.index');
+        Route::post('/register', [RegisterController::class, 'store'])->name('register.store');
     });
 
     Route::middleware(AuthenticatePortal::class)->group(function () {
