@@ -56,31 +56,11 @@
             <div class="app-menu">
                 <ul class="accordion-menu">
                     <li class="sidebar-title">Apps</li>
-                    <li class="active-page">
-                        <a href="{{ route('system.dashboard') }}" class="active">
+                    <li class="{{ request()->routeIs('system.dashboard') ? 'active-page' : '' }}">
+                        <a href="{{ route('system.dashboard') }}" class="{{ request()->routeIs('system.dashboard') ? 'active' : '' }}">
                             <i class="material-icons-two-tone">dashboard</i>
                             Dashboard
                         </a>
-                    </li>
-                    <li>
-                        <a href="mailbox.html">
-                            <i class="material-icons-two-tone">inbox</i> Mailbox
-                            <span class="badge rounded-pill badge-danger float-end">87</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="file-manager.html">
-                            <i class="material-icons-two-tone">cloud_queue</i> File Manager
-                        </a>
-                    </li>
-                    <li>
-                        <a href="calendar.html">
-                            <i class="material-icons-two-tone">calendar_today</i> Calendar
-                            <span class="badge rounded-pill badge-success float-end">14</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="todo.html"><i class="material-icons-two-tone">done</i>Todo</a>
                     </li>
                     <li>
                         <a href="">
@@ -89,32 +69,10 @@
                         </a>
                         <ul class="sub-menu">
                             <li>
-                                <a href="pricing.html">Pricing</a>
+                                <a href="#">Page 1</a>
                             </li>
                             <li>
-                                <a href="invoice.html">Invoice</a>
-                            </li>
-                            <li>
-                                <a href="settings.html">Settings</a>
-                            </li>
-                            <li>
-                                <a href="#">
-                                    Authentication <i class="material-icons has-sub-menu">keyboard_arrow_right</i>
-                                </a>
-                                <ul class="sub-menu">
-                                    <li>
-                                        <a href="sign-in.html">Sign In</a>
-                                    </li>
-                                    <li>
-                                        <a href="sign-up.html">Sign Up</a>
-                                    </li>
-                                    <li>
-                                        <a href="lock-screen.html">Lock Screen</a>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li>
-                                <a href="error.html">Error</a>
+                                <a href="#">Page 2</a>
                             </li>
                         </ul>
                     </li>
