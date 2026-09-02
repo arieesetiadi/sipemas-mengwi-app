@@ -7,7 +7,7 @@
                 <div class="col">
                     <div class="page-description d-flex align-items-center">
                         <div class="page-description-content flex-grow-1">
-                            <h1>Dashboard</h1>
+                            <h1>Home</h1>
                         </div>
                         <div class="page-description-actions">
                             <a href="#" class="btn btn-info btn-style-light"><i
