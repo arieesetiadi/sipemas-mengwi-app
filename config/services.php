@@ -35,4 +35,7 @@ return [
         ],
     ],
 
+    'npoint' => [
+        'api_url' => env('NPOINT_API_URL'),
+    ],
 ];
