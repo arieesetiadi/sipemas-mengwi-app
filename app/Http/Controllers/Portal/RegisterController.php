@@ -2,35 +2,38 @@
 
 namespace App\Http\Controllers\Portal;
 
-use App\Enums\Role as RoleEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Portal\Auth\RegisterRequest;
-use App\Models\Role;
-use App\Models\User;
+use App\Models\Banjar;
+use App\Models\Penduduk;
 use Illuminate\Support\Facades\Auth;
 
 class RegisterController extends Controller
 {
     public function index()
     {
-        return view('portal.pages.register');
+        $banjar = Banjar::orderBy('label')->get();
+
+        return view('portal.pages.register', compact('banjar'));
     }
 
     public function store(RegisterRequest $request)
     {
         $data = $request->validated();
 
-        $user = User::create([
+        $penduduk = Penduduk::create([
             'nama' => $data['nama'],
             'email' => $data['email'],
             'telepon' => $request->filled('telepon') ? $data['telepon'] : null,
             'password' => $data['password'],
-            'role_id' => Role::where('label', RoleEnum::Penduduk->value)->value('id'),
+            'nik' => $data['nik'],
+            'alamat' => $data['alamat'],
+            'banjar_id' => $data['banjar_id'],
             'is_active' => true,
         ]);
 
-        Auth::guard('portal')->login($user);
+        Auth::guard('portal')->login($penduduk);
 
-        return to_route('portal.home')->with('toast', 'Pendaftaran berhasil, selamat datang ' . $user->nama . '!');
+        return to_route('portal.home')->with('toast', 'Pendaftaran berhasil, selamat datang ' . $penduduk->nama . '!');
     }
 }

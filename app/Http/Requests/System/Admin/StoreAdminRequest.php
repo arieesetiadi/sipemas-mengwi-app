@@ -23,8 +23,8 @@ class StoreAdminRequest extends FormRequest
     {
         return [
             'nama' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'email', 'unique:users,email'],
-            'telepon' => ['nullable', 'string', 'max:20', 'unique:users,telepon'],
+            'email' => ['required', 'email', 'unique:admins,email'],
+            'telepon' => ['nullable', 'string', 'max:20', 'unique:admins,telepon'],
             'role_id' => ['required', 'exists:roles,id'],
             'password' => ['required', 'string', 'min:8'],
             'is_active' => ['nullable', 'boolean'],

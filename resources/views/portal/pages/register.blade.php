@@ -49,6 +49,30 @@
                     </div>
 
                     <div class="m-b-md">
+                        <label for="nik" class="form-label required">NIK</label>
+                        <input type="text" name="nik" class="form-control" id="nik"
+                            placeholder="16 digit NIK" value="{{ old('nik') }}" maxlength="16" inputmode="numeric" required>
+                    </div>
+
+                    <div class="m-b-md">
+                        <label for="banjar_id" class="form-label required">Banjar</label>
+                        <select name="banjar_id" class="form-select" id="banjar_id" required>
+                            <option value="">-- Pilih Banjar --</option>
+                            @foreach ($banjar as $banjar)
+                                <option value="{{ $banjar->id }}" {{ old('banjar_id') == $banjar->id ? 'selected' : '' }}>
+                                    {{ $banjar->label }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div class="m-b-md">
+                        <label for="alamat" class="form-label required">Alamat</label>
+                        <textarea name="alamat" class="form-control" id="alamat" rows="2"
+                            placeholder="Alamat lengkap sesuai KTP" required>{{ old('alamat') }}</textarea>
+                    </div>
+
+                    <div class="m-b-md">
                         <label for="password" class="form-label required">Kata Sandi</label>
                         <input type="password" name="password" class="form-control" id="password"
                             placeholder="Minimal 8 karakter" required>
@@ -83,12 +107,23 @@
                     nama: { required: true, maxlength: 255 },
                     email: { required: true, email: true },
                     telepon: { maxlength: 20 },
+                    nik: { required: true, digits: true, minlength: 16, maxlength: 16 },
+                    banjar_id: { required: true },
+                    alamat: { required: true, maxlength: 255 },
                     password: { required: true, minlength: 8 },
                     password_confirmation: { required: true, equalTo: '#password' }
                 },
                 messages: {
                     nama: { required: 'Nama lengkap wajib diisi.' },
                     email: { required: 'Alamat email wajib diisi.', email: 'Format email tidak valid.' },
+                    nik: {
+                        required: 'NIK wajib diisi.',
+                        digits: 'NIK harus angka.',
+                        minlength: 'NIK harus 16 digit.',
+                        maxlength: 'NIK harus 16 digit.'
+                    },
+                    banjar_id: { required: 'Banjar wajib dipilih.' },
+                    alamat: { required: 'Alamat wajib diisi.', maxlength: 'Alamat maksimal 255 karakter.' },
                     password: { required: 'Kata sandi wajib diisi.', minlength: 'Kata sandi minimal 8 karakter.' },
                     password_confirmation: {
                         required: 'Konfirmasi kata sandi wajib diisi.',

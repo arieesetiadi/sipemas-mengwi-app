@@ -4,7 +4,7 @@ namespace App\Http\Controllers\System;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\System\Auth\LoginRequest;
-use App\Models\User;
+use App\Models\Admin;
 use Illuminate\Auth\SessionGuard;
 use Illuminate\Support\Facades\Auth;
 
@@ -24,7 +24,7 @@ class LoginController extends Controller
 
         if ($guard->attemptWhen(
             $credentials,
-            fn (User $user) => ! $user->isPenduduk(),
+            fn (Admin $admin) => $admin->is_active,
         )) {
             return to_route('system.dashboard');
         }

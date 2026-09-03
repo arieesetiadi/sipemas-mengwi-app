@@ -29,13 +29,12 @@ class UpdatePendudukRequest extends FormRequest
      */
     public function rules(): array
     {
-        $penduduk = $this->route('penduduk');
-        $pendudukId = $penduduk->penduduk?->id;
+        $pendudukId = $this->route('penduduk')->id;
 
         return [
             'nama' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'email', 'unique:users,email,' . $penduduk->id],
-            'telepon' => ['nullable', 'string', 'max:20', 'unique:users,telepon,' . $penduduk->id],
+            'email' => ['required', 'email', 'unique:penduduk,email,' . $pendudukId],
+            'telepon' => ['nullable', 'string', 'max:20', 'unique:penduduk,telepon,' . $pendudukId],
             'password' => ['sometimes', 'nullable', 'string', 'min:8'],
             'is_active' => ['nullable', 'boolean'],
             'nik' => ['required', 'digits:16', 'unique:penduduk,nik,' . $pendudukId],

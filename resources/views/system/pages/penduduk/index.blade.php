@@ -51,10 +51,10 @@
                                     @foreach ($penduduk as $penduduk)
                                         <tr>
                                             <td>{{ $penduduk->nama }}</td>
-                                            <td>{{ $penduduk->penduduk?->nik ?? '-' }}</td>
+                                            <td>{{ $penduduk->nik }}</td>
                                             <td>{{ $penduduk->email }}</td>
                                             <td>{{ $penduduk->telepon ?? '-' }}</td>
-                                            <td>{{ $penduduk->penduduk?->banjar?->label ?? '-' }}</td>
+                                            <td>{{ $penduduk->banjar?->label ?? '-' }}</td>
                                             <td>
                                                 @if ($penduduk->is_active)
                                                     <span class="badge bg-success w-100 pt-2">Aktif</span>

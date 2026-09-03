@@ -24,9 +24,9 @@ class UserSeeder extends Seeder
         $banjar = Banjar::firstOrCreate(['label' => 'Banjar Serangan']);
 
         $accounts = [
-            ['Perbekel Test', 'perbekel@desa.test', RoleEnum::Perbekel],
-            ['Sekretaris Test', 'sekretaris@desa.test', RoleEnum::Sekretaris],
-            ['Staf Test', 'staf@desa.test', RoleEnum::Staf],
+            ['Perbekel', 'perbekel@desa.test', RoleEnum::Perbekel],
+            ['Sekretaris', 'sekretaris@desa.test', RoleEnum::Sekretaris],
+            ['Staf', 'staf@desa.test', RoleEnum::Staf],
         ];
 
         foreach ($accounts as [$nama, $email, $role]) {

@@ -71,7 +71,7 @@
                                     <div class="col-md-6 mb-3">
                                         <label for="nik" class="form-label">NIK <span class="text-danger">*</span></label>
                                         <input type="text" name="nik" id="nik" class="form-control @error('nik') is-invalid @enderror"
-                                            value="{{ old('nik', $penduduk->penduduk?->nik ?? '') }}" placeholder="16 digit NIK">
+                                            value="{{ old('nik', $penduduk->nik ?? '') }}" placeholder="16 digit NIK">
                                         @error('nik')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
@@ -82,7 +82,7 @@
                                             <option value="">-- Pilih Banjar --</option>
                                             @foreach ($banjar as $banjar)
                                                 <option value="{{ $banjar->id }}"
-                                                    {{ old('banjar_id', $penduduk->penduduk?->banjar_id ?? '') == $banjar->id ? 'selected' : '' }}>
+                                                    {{ old('banjar_id', $penduduk->banjar_id ?? '') == $banjar->id ? 'selected' : '' }}>
                                                     {{ $banjar->label }}
                                                 </option>
                                             @endforeach
@@ -96,7 +96,7 @@
                                 <div class="mb-3">
                                     <label for="alamat" class="form-label">Alamat <span class="text-danger">*</span></label>
                                     <textarea name="alamat" id="alamat" rows="2" class="form-control @error('alamat') is-invalid @enderror"
-                                        placeholder="Alamat lengkap">{{ old('alamat', $penduduk->penduduk?->alamat ?? '') }}</textarea>
+                                        placeholder="Alamat lengkap">{{ old('alamat', $penduduk->alamat ?? '') }}</textarea>
                                     @error('alamat')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror

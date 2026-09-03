@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Portal;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Portal\Auth\LoginRequest;
-use App\Models\User;
+use App\Models\Penduduk;
 use Illuminate\Auth\SessionGuard;
 use Illuminate\Support\Facades\Auth;
 
@@ -24,7 +24,7 @@ class LoginController extends Controller
 
         if ($guard->attemptWhen(
             $credentials,
-            fn (User $user) => $user->isPenduduk() && $user->is_active,
+            fn (Penduduk $penduduk) => $penduduk->is_active,
         )) {
             return to_route('portal.home')->with('toast', 'Selamat datang kembali, ' . $guard->user()->nama . '!');
         }

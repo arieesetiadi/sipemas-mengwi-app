@@ -32,8 +32,8 @@ class UpdateAdminRequest extends FormRequest
 
         return [
             'nama' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'email', 'unique:users,email,' . $adminId],
-            'telepon' => ['nullable', 'string', 'max:20', 'unique:users,telepon,' . $adminId],
+            'email' => ['required', 'email', 'unique:admins,email,' . $adminId],
+            'telepon' => ['nullable', 'string', 'max:20', 'unique:admins,telepon,' . $adminId],
             'role_id' => ['required', 'exists:roles,id'],
             'password' => ['sometimes', 'nullable', 'string', 'min:8'],
             'is_active' => ['nullable', 'boolean'],

@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\Role;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Attributes\Scope;
@@ -24,8 +23,12 @@ class Penduduk extends Authenticatable
         return [
             'password' => 'hashed',
             'is_active' => 'boolean',
-            'role_id' => 'integer',
         ];
+    }
+
+    public function banjar(): BelongsTo
+    {
+        return $this->belongsTo(Banjar::class);
     }
 
     #[Scope]

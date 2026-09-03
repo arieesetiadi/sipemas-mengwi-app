@@ -23,11 +23,10 @@ class StorePendudukRequest extends FormRequest
     {
         return [
             'nama' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'email', 'unique:users,email'],
-            'telepon' => ['nullable', 'string', 'max:20', 'unique:users,telepon'],
+            'email' => ['required', 'email', 'unique:penduduk,email'],
+            'telepon' => ['nullable', 'string', 'max:20', 'unique:penduduk,telepon'],
             'password' => ['required', 'string', 'min:8'],
             'is_active' => ['nullable', 'boolean'],
-            // data penduduk, nyimpennya di tabel penduduk
             'nik' => ['required', 'digits:16', 'unique:penduduk,nik'],
             'alamat' => ['required', 'string', 'max:255'],
             'banjar_id' => ['required', 'exists:banjar,id'],
