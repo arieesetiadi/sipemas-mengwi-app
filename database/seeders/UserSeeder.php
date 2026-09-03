@@ -3,10 +3,10 @@
 namespace Database\Seeders;
 
 use App\Enums\Role as RoleEnum;
+use App\Models\Admin;
 use App\Models\Banjar;
 use App\Models\Penduduk;
 use App\Models\Role;
-use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
@@ -24,14 +24,13 @@ class UserSeeder extends Seeder
         $banjar = Banjar::firstOrCreate(['label' => 'Banjar Serangan']);
 
         $accounts = [
-            ['Perbekel', 'perbekel@desa.test', RoleEnum::Perbekel],
-            ['Sekretaris', 'sekretaris@desa.test', RoleEnum::Sekretaris],
-            ['Staf', 'staf@desa.test', RoleEnum::Staf],
-            ['I Putu Roberto', 'penduduk@desa.test', RoleEnum::Penduduk],
+            ['Perbekel Test', 'perbekel@desa.test', RoleEnum::Perbekel],
+            ['Sekretaris Test', 'sekretaris@desa.test', RoleEnum::Sekretaris],
+            ['Staf Test', 'staf@desa.test', RoleEnum::Staf],
         ];
 
         foreach ($accounts as [$nama, $email, $role]) {
-            $user = User::updateOrCreate(
+            Admin::updateOrCreate(
                 ['email' => $email],
                 [
                     'nama' => $nama,
@@ -40,17 +39,18 @@ class UserSeeder extends Seeder
                     'is_active' => true,
                 ]
             );
-
-            if ($role === RoleEnum::Penduduk) {
-                Penduduk::firstOrCreate(
-                    ['nik' => '0000000000000000'],
-                    [
-                        'user_id' => $user->id,
-                        'banjar_id' => $banjar->id,
-                        'alamat' => $banjar->label . ', Desa Mengwi, Kec. Mengwi, Badung',
-                    ]
-                );
-            }
         }
+
+        Penduduk::updateOrCreate(
+            ['nik' => '0000000000000000'],
+            [
+                'nama' => 'Penduduk Test',
+                'email' => 'penduduk@desa.test',
+                'password' => Hash::make('penduduk'),
+                'telepon' => '081234567890',
+                'alamat' => $banjar->label . ', Desa Mengwi, Kec. Mengwi, Badung',
+                'banjar_id' => $banjar->id,
+            ]
+        );
     }
 }

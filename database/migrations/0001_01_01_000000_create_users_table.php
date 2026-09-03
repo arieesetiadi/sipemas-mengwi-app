@@ -23,7 +23,7 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('admins', function (Blueprint $table) {
             $table->id();
             $table->foreignId('role_id')->nullable()->constrained('roles', 'id')->nullOnDelete();
             $table->string('nama');
@@ -37,10 +37,15 @@ return new class extends Migration
 
         Schema::create('penduduk', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->nullable()->constrained('users', 'id')->cascadeOnDelete();
             $table->foreignId('banjar_id')->nullable()->constrained('banjar', 'id')->nullOnDelete();
+            $table->string('nama');
+            $table->string('email')->unique();
+            $table->string('telepon', 20)->nullable()->unique();
+            $table->string('password');
             $table->char('nik', 16)->unique();
             $table->string('alamat');
+            $table->boolean('is_active')->default(true);
+            $table->rememberToken();
             $table->timestamps();
         });
 
@@ -61,7 +66,7 @@ return new class extends Migration
     {
         Schema::dropIfExists('penduduk');
         Schema::dropIfExists('sessions');
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('admins');
         Schema::dropIfExists('banjar');
         Schema::dropIfExists('roles');
     }

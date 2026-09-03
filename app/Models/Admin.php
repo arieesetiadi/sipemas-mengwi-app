@@ -3,14 +3,14 @@
 namespace App\Models;
 
 use App\Models\Role;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class Penduduk extends Authenticatable
+class Admin extends Authenticatable
 {
-    protected $table = 'penduduk';
+    protected $table = 'admins';
 
     protected $guarded = [];
 
@@ -26,6 +26,11 @@ class Penduduk extends Authenticatable
             'is_active' => 'boolean',
             'role_id' => 'integer',
         ];
+    }
+
+    public function role(): BelongsTo
+    {
+        return $this->belongsTo(Role::class);
     }
 
     #[Scope]
