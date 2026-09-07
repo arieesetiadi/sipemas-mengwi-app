@@ -1,5 +1,8 @@
 @extends('system.layouts.layout')
 
+@use('App\Enums\Agama')
+@use('App\Enums\JenisKelamin')
+
 @php
     $isEdit = isset($penduduk);
     $routeAction = $isEdit ? route('system.penduduk.update', $penduduk) : route('system.penduduk.store');
@@ -93,6 +96,66 @@
                                     </div>
                                 </div>
 
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="tempat_lahir" class="form-label">Tempat Lahir <span class="text-danger">*</span></label>
+                                        <input type="text" name="tempat_lahir" id="tempat_lahir" class="form-control @error('tempat_lahir') is-invalid @enderror"
+                                            value="{{ old('tempat_lahir', $penduduk->tempat_lahir ?? '') }}" placeholder="Sesuai KTP">
+                                        @error('tempat_lahir')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="tanggal_lahir" class="form-label">Tanggal Lahir <span class="text-danger">*</span></label>
+                                        <input type="date" name="tanggal_lahir" id="tanggal_lahir" class="form-control @error('tanggal_lahir') is-invalid @enderror"
+                                            value="{{ old('tanggal_lahir', $penduduk->tanggal_lahir ?? '') }}">
+                                        @error('tanggal_lahir')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-4 mb-3">
+                                        <label for="jenis_kelamin" class="form-label">Jenis Kelamin <span class="text-danger">*</span></label>
+                                        <select name="jenis_kelamin" id="jenis_kelamin" class="form-select @error('jenis_kelamin') is-invalid @enderror">
+                                            <option value="">-- Pilih Jenis Kelamin --</option>
+                                            @foreach (JenisKelamin::cases() as $jk)
+                                                <option value="{{ $jk->value }}"
+                                                    {{ old('jenis_kelamin', $penduduk->jenis_kelamin ?? '') == $jk->value ? 'selected' : '' }}>
+                                                    {{ $jk->label() }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                        @error('jenis_kelamin')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                    <div class="col-md-4 mb-3">
+                                        <label for="agama" class="form-label">Agama <span class="text-danger">*</span></label>
+                                        <select name="agama" id="agama" class="form-select @error('agama') is-invalid @enderror">
+                                            <option value="">-- Pilih Agama --</option>
+                                            @foreach (Agama::cases() as $agama)
+                                                <option value="{{ $agama->value }}"
+                                                    {{ old('agama', $penduduk->agama ?? '') == $agama->value ? 'selected' : '' }}>
+                                                    {{ $agama->value }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                        @error('agama')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                    <div class="col-md-4 mb-3">
+                                        <label for="pekerjaan" class="form-label">Pekerjaan <span class="text-danger">*</span></label>
+                                        <input type="text" name="pekerjaan" id="pekerjaan" class="form-control @error('pekerjaan') is-invalid @enderror"
+                                            value="{{ old('pekerjaan', $penduduk->pekerjaan ?? '') }}" placeholder="Contoh: Petani, Karyawan Swasta">
+                                        @error('pekerjaan')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+
                                 <div class="mb-3">
                                     <label for="alamat" class="form-label">Alamat <span class="text-danger">*</span></label>
                                     <textarea name="alamat" id="alamat" rows="2" class="form-control @error('alamat') is-invalid @enderror"
@@ -167,6 +230,24 @@
                     banjar_id: {
                         required: true
                     },
+                    tempat_lahir: {
+                        required: true,
+                        maxlength: 255
+                    },
+                    tanggal_lahir: {
+                        required: true,
+                        date: true
+                    },
+                    jenis_kelamin: {
+                        required: true
+                    },
+                    agama: {
+                        required: true
+                    },
+                    pekerjaan: {
+                        required: true,
+                        maxlength: 255
+                    },
                     alamat: {
                         required: true,
                         maxlength: 255
@@ -195,6 +276,24 @@
                     },
                     banjar_id: {
                         required: 'Banjar wajib dipilih.'
+                    },
+                    tempat_lahir: {
+                        required: 'Tempat lahir wajib diisi.',
+                        maxlength: 'Tempat lahir maksimal 255 karakter.'
+                    },
+                    tanggal_lahir: {
+                        required: 'Tanggal lahir wajib diisi.',
+                        date: 'Format tanggal lahir tidak valid.'
+                    },
+                    jenis_kelamin: {
+                        required: 'Jenis kelamin wajib dipilih.'
+                    },
+                    agama: {
+                        required: 'Agama wajib dipilih.'
+                    },
+                    pekerjaan: {
+                        required: 'Pekerjaan wajib diisi.',
+                        maxlength: 'Pekerjaan maksimal 255 karakter.'
                     },
                     alamat: {
                         required: 'Alamat wajib diisi.',

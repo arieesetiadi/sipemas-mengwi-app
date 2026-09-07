@@ -2,7 +2,10 @@
 
 namespace App\Http\Requests\System\Penduduk;
 
+use App\Enums\Agama;
+use App\Enums\JenisKelamin;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StorePendudukRequest extends FormRequest
 {
@@ -30,6 +33,11 @@ class StorePendudukRequest extends FormRequest
             'nik' => ['required', 'digits:16', 'unique:penduduk,nik'],
             'alamat' => ['required', 'string', 'max:255'],
             'banjar_id' => ['required', 'exists:banjar,id'],
+            'tempat_lahir' => ['required', 'string', 'max:255'],
+            'tanggal_lahir' => ['required', 'date', 'before:today'],
+            'jenis_kelamin' => ['required', Rule::in(JenisKelamin::values())],
+            'agama' => ['required', Rule::in(Agama::values())],
+            'pekerjaan' => ['required', 'string', 'max:255'],
         ];
     }
 
@@ -51,6 +59,17 @@ class StorePendudukRequest extends FormRequest
             'alamat.max' => 'Alamat maksimal 255 karakter.',
             'banjar_id.required' => 'Banjar wajib dipilih.',
             'banjar_id.exists' => 'Banjar yang dipilih tidak valid.',
+            'tempat_lahir.required' => 'Tempat lahir wajib diisi.',
+            'tempat_lahir.max' => 'Tempat lahir maksimal 255 karakter.',
+            'tanggal_lahir.required' => 'Tanggal lahir wajib diisi.',
+            'tanggal_lahir.date' => 'Format tanggal lahir tidak valid.',
+            'tanggal_lahir.before' => 'Tanggal lahir tidak boleh di masa depan.',
+            'jenis_kelamin.required' => 'Jenis kelamin wajib dipilih.',
+            'jenis_kelamin.in' => 'Jenis kelamin yang dipilih tidak valid.',
+            'agama.required' => 'Agama wajib dipilih.',
+            'agama.in' => 'Agama yang dipilih tidak valid.',
+            'pekerjaan.required' => 'Pekerjaan wajib diisi.',
+            'pekerjaan.max' => 'Pekerjaan maksimal 255 karakter.',
         ];
     }
 }
