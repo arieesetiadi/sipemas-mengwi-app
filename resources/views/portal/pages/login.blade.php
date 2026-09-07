@@ -10,7 +10,7 @@
                 <a href="{{ route('portal.home') }}">SIPEMAS Mengwi</a>
             </div>
             <div class="d-flex justify-content-start">
-                <span class="badge d-inline-block bg-primary mt-4 py-1 px-4">PORTAL Penduduk</span>
+                <span class="badge d-inline-block bg-primary mt-4 py-2 px-4">PORTAL Penduduk</span>
             </div>
             <p class="auth-description">
                 Selamat datang di Portal Penduduk SIPEMAS Mengwi.<br>

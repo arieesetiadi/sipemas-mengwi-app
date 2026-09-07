@@ -1,5 +1,7 @@
 <?php
 
+use App\Enums\Agama;
+use App\Enums\JenisKelamin;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -44,6 +46,11 @@ return new class extends Migration
             $table->string('password');
             $table->char('nik', 16)->unique();
             $table->string('alamat');
+            $table->string('tempat_lahir');
+            $table->date('tanggal_lahir');
+            $table->enum('jenis_kelamin', JenisKelamin::values());
+            $table->enum('agama', Agama::values());
+            $table->string('pekerjaan');
             $table->boolean('is_active')->default(true);
             $table->rememberToken();
             $table->timestamps();

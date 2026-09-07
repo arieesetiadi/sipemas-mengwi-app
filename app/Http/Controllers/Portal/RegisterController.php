@@ -29,6 +29,11 @@ class RegisterController extends Controller
             'nik' => $data['nik'],
             'alamat' => $data['alamat'],
             'banjar_id' => $data['banjar_id'],
+            'tempat_lahir' => $data['tempat_lahir'],
+            'tanggal_lahir' => $data['tanggal_lahir'],
+            'jenis_kelamin' => $data['jenis_kelamin'],
+            'agama' => $data['agama'],
+            'pekerjaan' => $data['pekerjaan'],
             'is_active' => true,
         ]);
 

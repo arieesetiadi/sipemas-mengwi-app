@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Enums\Agama;
+use App\Enums\JenisKelamin;
 use App\Enums\Role as RoleEnum;
 use App\Models\Admin;
 use App\Models\Banjar;
@@ -50,6 +52,11 @@ class UserSeeder extends Seeder
                 'telepon' => '081234567890',
                 'alamat' => $banjar->label . ', Desa Mengwi, Kec. Mengwi, Badung',
                 'banjar_id' => $banjar->id,
+                'tempat_lahir' => 'Mengwi',
+                'tanggal_lahir' => '1990-01-01',
+                'jenis_kelamin' => JenisKelamin::LakiLaki->value,
+                'agama' => Agama::Hindu->value,
+                'pekerjaan' => 'Wiraswasta',
             ]
         );
     }

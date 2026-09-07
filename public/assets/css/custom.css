@@ -1,4 +1,13 @@
 /* Your Custom CSS Goes here */
+/* Layout halaman auth desktop jadi 50:50 biar area form di kanan lebih luas */
+@media (min-width: 1201px) {
+    .app-auth-sign-in .app-auth-container,
+    .app-auth-sign-up .app-auth-container,
+    .app-auth-lock-screen .app-auth-container {
+        width: 50%;
+    }
+}
+
 label.required::after {
     content: " *";
     color: red;
