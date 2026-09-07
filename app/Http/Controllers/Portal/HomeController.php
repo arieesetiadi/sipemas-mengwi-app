@@ -3,12 +3,14 @@
 namespace App\Http\Controllers\Portal;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Models\JenisSurat;
 
 class HomeController extends Controller
 {
     public function index()
     {
-        return view('portal.pages.home');
+        $jenisSurat = JenisSurat::orderBy('label')->get();
+
+        return view('portal.pages.home', compact('jenisSurat'));
     }
 }

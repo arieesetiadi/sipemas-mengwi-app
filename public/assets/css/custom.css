@@ -21,3 +21,16 @@ label.required::after {
     display: block;
     margin-bottom: 0;
 }
+
+/* Card tombol pilihan jenis surat di portal home */
+.widget-stats-btn {
+    color: inherit;
+    cursor: pointer;
+    transition: transform .25s ease, box-shadow .25s ease;
+}
+
+.widget-stats-btn:hover,
+.widget-stats-btn:focus-visible {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 24px rgba(11, 38, 67, .12);
+}
