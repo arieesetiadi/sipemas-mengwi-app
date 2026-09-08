@@ -40,7 +40,7 @@
                     <div>
                         <label for="password" class="form-label required">Kata Sandi</label>
                         <input type="password" name="password" class="form-control" id="password"
-                            placeholder="&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;" value="i putu roberto" required>
+                            placeholder="&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;" value="penduduk" required>
                     </div>
                 </div>
 

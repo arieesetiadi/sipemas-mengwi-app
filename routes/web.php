@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Portal\HomeController;
 use App\Http\Controllers\Portal\LoginController;
 use App\Http\Controllers\Portal\LogoutController;
+use App\Http\Controllers\Portal\PengajuanSuratController;
 use App\Http\Controllers\Portal\RegisterController;
 use App\Http\Controllers\System\AdminController;
 use App\Http\Controllers\System\DashboardController;
@@ -28,6 +29,10 @@ Route::as('portal.')->middleware(MainHandler::class)->group(function () {
 
     Route::middleware(AuthenticatePortal::class)->group(function () {
         Route::get('/', [HomeController::class, 'index'])->name('home');
+
+        Route::get('/pengajuan/{jenisSurat}/create', [PengajuanSuratController::class, 'create'])->name('pengajuan.create');
+        Route::post('/pengajuan/{jenisSurat}', [PengajuanSuratController::class, 'store'])->name('pengajuan.store');
+
         Route::get('/logout', [LogoutController::class, 'logout'])->name('logout');
     });
 });

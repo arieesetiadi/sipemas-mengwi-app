@@ -13,4 +13,14 @@ enum StatusSurat: string
     {
         return array_column(self::cases(), 'value');
     }
+
+    public function badgeClass(): string
+    {
+        return match ($this) {
+            self::Diajukan => 'bg-warning',
+            self::Diverifikasi => 'bg-primary',
+            self::Selesai => 'bg-success',
+            self::Ditolak => 'bg-danger',
+        };
+    }
 }

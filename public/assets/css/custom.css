@@ -34,3 +34,16 @@ label.required::after {
     transform: translateY(-4px);
     box-shadow: 0 12px 24px rgba(11, 38, 67, .12);
 }
+
+.modal-backdrop {
+    z-index: 10020;
+}
+
+.modal {
+    z-index: 10030;
+    padding-right: 0 !important;
+}
+
+body.modal-open {
+    padding-right: 0 !important;
+}
