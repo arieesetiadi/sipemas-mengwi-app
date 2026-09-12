@@ -171,7 +171,7 @@
                         <div class="card-body">
                             <h6 class="fw-bold mb-3">Lampiran</h6>
                             @forelse ($pengajuan->lampiran as $lampiran)
-                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                <div class="d-flex justify-content-start gap-3 align-items-center mb-3">
                                     <span>{{ $lampiran->jenis_lampiran->value }}</span>
                                     <a href="{{ route('system.pengajuan.lampiran', [$pengajuan, $lampiran]) }}"
                                         target="_blank" class="btn btn-sm btn-light">
@@ -190,13 +190,13 @@
                         <div class="card-body">
                             <h6 class="fw-bold mb-3">Riwayat Proses</h6>
                             <ul class="list-unstyled mb-0">
-                                <li class="mb-2">
+                                <li class="mb-3">
                                     <span class="badge bg-warning me-2">Diajukan</span>
                                     {{ $pengajuan->created_at?->format('d M Y H:i') }}
                                 </li>
 
                                 @if ($pengajuan->diverifikasi_pada)
-                                    <li class="mb-2">
+                                    <li class="mb-3">
                                         <span class="badge bg-primary me-2">Diverifikasi</span>
                                         oleh {{ $pengajuan->diverifikasiOleh?->nama ?? '-' }}
                                         pada {{ $pengajuan->diverifikasi_pada->format('d M Y H:i') }}
@@ -204,7 +204,7 @@
                                 @endif
 
                                 @if ($pengajuan->status === StatusSurat::Ditolak)
-                                    <li class="mb-2">
+                                    <li class="mb-4">
                                         <span class="badge bg-danger me-2">Ditolak</span>
                                         oleh {{ $pengajuan->ditolakOleh?->nama ?? '-' }}
                                         pada {{ $pengajuan->ditolak_pada?->format('d M Y H:i') }}
@@ -216,7 +216,7 @@
                                 @endif
 
                                 @if ($pengajuan->status === StatusSurat::Selesai)
-                                    <li class="mb-2">
+                                    <li class="mb-3">
                                         <span class="badge bg-success me-2">Selesai</span>
                                         oleh {{ $pengajuan->disetujuiOleh?->nama ?? '-' }}
                                         pada {{ $pengajuan->disetujui_pada?->format('d M Y H:i') }}

@@ -7,6 +7,8 @@
 @php
     $penduduk = auth('portal')->user();
     $jkLabel = JenisKelamin::from($penduduk->jenis_kelamin)->label();
+    $pengajuan = $pengajuan ?? null;
+    $isEdit = $pengajuan !== null;
 @endphp
 
 @section('content')
@@ -15,7 +17,7 @@
             <div class="row">
                 <div class="col">
                     <div class="page-description d-flex justify-content-between align-items-center">
-                        <h1>Ajukan {{ $jenisSurat->label }}</h1>
+                        <h1>{{ $isEdit ? 'Ajukan Ulang' : 'Ajukan' }} {{ $jenisSurat->label }}</h1>
                         <a href="{{ route('portal.home') }}" class="btn btn-light">
                             <i class="material-icons">arrow_back</i> Kembali
                         </a>
@@ -35,9 +37,13 @@
 
             <div class="card">
                 <div class="card-body">
-                    <form id="pengajuan-form" action="{{ route('portal.pengajuan.store', $jenisSurat) }}" method="POST"
-                        enctype="multipart/form-data" novalidate>
+                    <form id="pengajuan-form"
+                        action="{{ $isEdit ? route('portal.pengajuan.update', $pengajuan) : route('portal.pengajuan.store', $jenisSurat) }}"
+                        method="POST" enctype="multipart/form-data" novalidate>
                         @csrf
+                        @if ($isEdit)
+                            @method('PATCH')
+                        @endif
 
                         <h6 class="fw-bold mb-3">Data Pemohon</h6>
                         <div class="row g-3 mb-4">
@@ -107,7 +113,7 @@
                                         <option value="">-- Pilih Status Perkawinan --</option>
                                         @foreach (StatusPerkawinan::cases() as $status)
                                             <option value="{{ $status->value }}"
-                                                {{ old('status_perkawinan') == $status->value ? 'selected' : '' }}>
+                                                {{ old('status_perkawinan', $pengajuan?->status_perkawinan?->value) == $status->value ? 'selected' : '' }}>
                                                 {{ $status->value }}
                                             </option>
                                         @endforeach
@@ -125,8 +131,8 @@
                                     <label for="nama_usaha" class="form-label required">Nama Usaha</label>
                                     <input type="text" name="nama_usaha" id="nama_usaha"
                                         class="form-control @error('nama_usaha') is-invalid @enderror"
-                                        value="{{ old('nama_usaha') }}" placeholder="Nama usaha Anda" maxlength="255"
-                                        required>
+                                        value="{{ old('nama_usaha', $pengajuan?->nama_usaha ?? '') }}"
+                                        placeholder="Nama usaha Anda" maxlength="255" required>
                                     @error('nama_usaha')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
@@ -135,8 +141,8 @@
                                     <label for="lokasi_usaha" class="form-label required">Lokasi Usaha</label>
                                     <input type="text" name="lokasi_usaha" id="lokasi_usaha"
                                         class="form-control @error('lokasi_usaha') is-invalid @enderror"
-                                        value="{{ old('lokasi_usaha') }}" placeholder="Alamat lokasi usaha"
-                                        maxlength="255" required>
+                                        value="{{ old('lokasi_usaha', $pengajuan?->lokasi_usaha ?? '') }}"
+                                        placeholder="Alamat lokasi usaha" maxlength="255" required>
                                     @error('lokasi_usaha')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
@@ -150,8 +156,8 @@
                                     <label for="tujuan_instansi" class="form-label required">Tujuan Instansi</label>
                                     <input type="text" name="tujuan_instansi" id="tujuan_instansi"
                                         class="form-control @error('tujuan_instansi') is-invalid @enderror"
-                                        value="{{ old('tujuan_instansi') }}" placeholder="Nama instansi tujuan"
-                                        maxlength="255" required>
+                                        value="{{ old('tujuan_instansi', $pengajuan?->tujuan_instansi ?? '') }}"
+                                        placeholder="Nama instansi tujuan" maxlength="255" required>
                                     @error('tujuan_instansi')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
@@ -160,8 +166,8 @@
                                     <label for="keperluan" class="form-label required">Keperluan</label>
                                     <input type="text" name="keperluan" id="keperluan"
                                         class="form-control @error('keperluan') is-invalid @enderror"
-                                        value="{{ old('keperluan') }}" placeholder="Keperluan pengajuan" maxlength="255"
-                                        required>
+                                        value="{{ old('keperluan', $pengajuan?->keperluan ?? '') }}"
+                                        placeholder="Keperluan pengajuan" maxlength="255" required>
                                     @error('keperluan')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
@@ -182,19 +188,43 @@
                         <hr class="my-5">
 
                         <h6 class="fw-bold mb-3">Lampiran</h6>
+
+                        @if ($isEdit && $pengajuan->lampiran->isNotEmpty())
+                            <div class="mb-4">
+                                <small class="text-muted d-block mb-2">Lampiran saat ini:</small>
+                                @foreach ($pengajuan->lampiran as $lampiran)
+                                    <div class="d-flex align-items-center gap-2 mb-1">
+                                        <span class="badge bg-dark">{{ $lampiran->jenis_lampiran->value }}</span>
+                                        <a href="{{ route('portal.pengajuan.lampiran', [$pengajuan, $lampiran]) }}"
+                                            target="_blank" class="btn btn-sm btn-light">
+                                            <i class="material-icons">visibility</i> Lihat
+                                        </a>
+                                    </div>
+                                @endforeach
+                            </div>
+                        @endif
+
                         <div class="row g-3">
                             <div class="col-md-6">
-                                <label for="lampiran_ktp" class="form-label required">KTP</label>
+                                <label for="lampiran_ktp" class="form-label {{ $isEdit ? '' : 'required' }}">KTP</label>
                                 <input type="file" name="lampiran_ktp" id="lampiran_ktp" accept=".jpg,.jpeg,.png,.pdf"
-                                    class="form-control @error('lampiran_ktp') is-invalid @enderror" required>
+                                    class="form-control @error('lampiran_ktp') is-invalid @enderror"
+                                    {{ $isEdit ? '' : 'required' }}>
+                                @if ($isEdit)
+                                    <small class="text-muted">Biarkan kosong jika tidak ingin mengubah.</small>
+                                @endif
                                 @error('lampiran_ktp')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
                             <div class="col-md-6">
-                                <label for="lampiran_kk" class="form-label required">Kartu Keluarga (KK)</label>
+                                <label for="lampiran_kk" class="form-label {{ $isEdit ? '' : 'required' }}">Kartu Keluarga (KK)</label>
                                 <input type="file" name="lampiran_kk" id="lampiran_kk" accept=".jpg,.jpeg,.png,.pdf"
-                                    class="form-control @error('lampiran_kk') is-invalid @enderror" required>
+                                    class="form-control @error('lampiran_kk') is-invalid @enderror"
+                                    {{ $isEdit ? '' : 'required' }}>
+                                @if ($isEdit)
+                                    <small class="text-muted">Biarkan kosong jika tidak ingin mengubah.</small>
+                                @endif
                                 @error('lampiran_kk')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -202,7 +232,7 @@
                         </div>
 
                         <div class="d-flex mt-5 gap-2">
-                            <button type="submit" class="btn btn-primary">Kirim Pengajuan</button>
+                            <button type="submit" class="btn btn-primary">{{ $isEdit ? 'Ajukan Ulang' : 'Kirim Pengajuan' }}</button>
                             <a href="{{ route('portal.home') }}" class="btn btn-light">Batal</a>
                         </div>
                     </form>
@@ -245,10 +275,10 @@
                         maxlength: 255
                     },
                     lampiran_ktp: {
-                        required: true
+                        required: {{ $isEdit ? 'false' : 'true' }}
                     },
                     lampiran_kk: {
-                        required: true
+                        required: {{ $isEdit ? 'false' : 'true' }}
                     }
                 },
                 messages: {

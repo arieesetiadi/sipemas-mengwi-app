@@ -34,7 +34,11 @@ Route::as('portal.')->middleware(MainHandler::class)->group(function () {
         Route::get('/pengajuan/{jenisSurat}/create', [PengajuanSuratController::class, 'create'])->name('pengajuan.create');
         Route::post('/pengajuan/{jenisSurat}', [PengajuanSuratController::class, 'store'])->name('pengajuan.store');
 
+        Route::get('/pengajuan/{pengajuan}/edit', [PengajuanSuratController::class, 'edit'])->name('pengajuan.edit');
+        Route::patch('/pengajuan/{pengajuan}', [PengajuanSuratController::class, 'update'])->name('pengajuan.update');
+
         Route::get('/pengajuan/{pengajuan}/download', [PengajuanSuratController::class, 'download'])->name('pengajuan.download');
+        Route::get('/pengajuan/{pengajuan}/lampiran/{lampiran}', [PengajuanSuratController::class, 'lampiran'])->name('pengajuan.lampiran');
 
         Route::get('/logout', [LogoutController::class, 'logout'])->name('logout');
     });

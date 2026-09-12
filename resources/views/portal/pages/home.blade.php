@@ -123,6 +123,10 @@
                                                             <a href="{{ route('portal.pengajuan.download', $item) }}"
                                                                 class="btn btn-sm btn-success">Download</a>
                                                         @endif
+                                                        @if ($item->status === StatusSurat::Ditolak)
+                                                            <a href="{{ route('portal.pengajuan.edit', $item) }}"
+                                                                class="btn btn-sm btn-warning">Ajukan Ulang</a>
+                                                        @endif
                                                     </div>
                                                 </td>
                                             </tr>
@@ -220,7 +224,7 @@
                 $(this).addClass('active');
 
                 var status = $(this).data('status');
-                table.column(3).search(status === '' ? '' : '^' + status + '$', true, false).draw();
+                table.column(3).search(status).draw();
             });
 
             var timelineSteps = ['Diajukan', 'Diverifikasi', 'Selesai'];
