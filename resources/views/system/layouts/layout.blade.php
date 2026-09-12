@@ -52,6 +52,14 @@
                             </li>
                         </ul>
                     </li>
+                    <li class="sidebar-title">Layanan</li>
+                    <li class="{{ request()->routeIs('system.pengajuan.*') ? 'active-page' : '' }}">
+                        <a href="{{ route('system.pengajuan.index') }}"
+                            class="{{ request()->routeIs('system.pengajuan.*') ? 'active' : '' }}">
+                            <i class="material-icons-two-tone">description</i>
+                            Pengajuan Surat
+                        </a>
+                    </li>
                     <li class="sidebar-title">Data Master</li>
                     <li class="{{ request()->routeIs('system.admin.*') ? 'active-page' : '' }}">
                         <a href="{{ route('system.admin.index') }}"

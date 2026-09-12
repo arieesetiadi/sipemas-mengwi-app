@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Portal;
 
+use App\Enums\JenisLampiran;
 use App\Enums\StatusPerkawinan;
 use App\Enums\StatusSurat;
 use App\Http\Controllers\Controller;
@@ -19,7 +20,7 @@ class PengajuanSuratController extends Controller
 
     public function store(StorePengajuanSuratRequest $request, JenisSurat $jenisSurat): RedirectResponse
     {
-        PengajuanSurat::create([
+        $pengajuan = PengajuanSurat::create([
             'penduduk_id' => auth('portal')->id(),
             'jenis_surat_id' => $jenisSurat->id,
             'status' => StatusSurat::Diajukan,
@@ -31,6 +32,25 @@ class PengajuanSuratController extends Controller
             'catatan' => $request->filled('catatan') ? $request->catatan : null,
         ]);
 
+        // simpan lampiran KTP & KK ke disk private
+        foreach ([JenisLampiran::KTP => 'lampiran_ktp', JenisLampiran::KK => 'lampiran_kk'] as $jenis => $field) {
+            if ($request->hasFile($field)) {
+                $path = $request->file($field)->store('lampiran/' . $pengajuan->id, 'local');
+
+                $pengajuan->lampiran()->create([
+                    'jenis_lampiran' => $jenis,
+                    'file_path' => $path,
+                ]);
+            }
+        }
+
         return to_route('portal.home')->with('toast', 'Pengajuan ' . $jenisSurat->label . ' berhasil dikirim.');
+    }
+
+    public function download(PengajuanSurat $pengajuan)
+    {
+        abort_unless($pengajuan->penduduk_id === auth('portal')->id(), 404);
+
+        dd($pengajuan->load(['penduduk', 'jenisSurat', 'lampiran']));
     }
 }

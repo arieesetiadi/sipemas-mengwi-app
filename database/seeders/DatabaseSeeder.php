@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
             BanjarSeeder::class,
             JenisSuratSeeder::class,
             UserSeeder::class,
+            PengajuanSuratSeeder::class,
         ]);
     }
 }

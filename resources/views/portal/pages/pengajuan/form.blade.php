@@ -36,7 +36,7 @@
             <div class="card">
                 <div class="card-body">
                     <form id="pengajuan-form" action="{{ route('portal.pengajuan.store', $jenisSurat) }}" method="POST"
-                        novalidate>
+                        enctype="multipart/form-data" novalidate>
                         @csrf
 
                         <h6 class="fw-bold mb-3">Data Pemohon</h6>
@@ -179,6 +179,28 @@
                                     @enderror
                                 </div> --}}
 
+                        <hr class="my-5">
+
+                        <h6 class="fw-bold mb-3">Lampiran</h6>
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label for="lampiran_ktp" class="form-label required">KTP</label>
+                                <input type="file" name="lampiran_ktp" id="lampiran_ktp" accept=".jpg,.jpeg,.png,.pdf"
+                                    class="form-control @error('lampiran_ktp') is-invalid @enderror" required>
+                                @error('lampiran_ktp')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="col-md-6">
+                                <label for="lampiran_kk" class="form-label required">Kartu Keluarga (KK)</label>
+                                <input type="file" name="lampiran_kk" id="lampiran_kk" accept=".jpg,.jpeg,.png,.pdf"
+                                    class="form-control @error('lampiran_kk') is-invalid @enderror" required>
+                                @error('lampiran_kk')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+
                         <div class="d-flex mt-5 gap-2">
                             <button type="submit" class="btn btn-primary">Kirim Pengajuan</button>
                             <a href="{{ route('portal.home') }}" class="btn btn-light">Batal</a>
@@ -221,6 +243,12 @@
                     @endif
                     catatan: {
                         maxlength: 255
+                    },
+                    lampiran_ktp: {
+                        required: true
+                    },
+                    lampiran_kk: {
+                        required: true
                     }
                 },
                 messages: {
@@ -238,6 +266,12 @@
                     },
                     keperluan: {
                         required: 'Keperluan wajib diisi.'
+                    },
+                    lampiran_ktp: {
+                        required: 'File KTP wajib diunggah.'
+                    },
+                    lampiran_kk: {
+                        required: 'File KK wajib diunggah.'
                     }
                 },
                 errorElement: 'div',

@@ -11,6 +11,7 @@ use App\Http\Controllers\System\DashboardController;
 use App\Http\Controllers\System\LoginController as SystemLoginController;
 use App\Http\Controllers\System\LogoutController as SystemLogoutController;
 use App\Http\Controllers\System\PendudukController;
+use App\Http\Controllers\System\PengajuanSuratController as SystemPengajuanSuratController;
 use App\Http\Middleware\AuthenticateAdmin;
 use App\Http\Middleware\AuthenticatePortal;
 use App\Http\Middleware\GuestAdmin;
@@ -33,6 +34,8 @@ Route::as('portal.')->middleware(MainHandler::class)->group(function () {
         Route::get('/pengajuan/{jenisSurat}/create', [PengajuanSuratController::class, 'create'])->name('pengajuan.create');
         Route::post('/pengajuan/{jenisSurat}', [PengajuanSuratController::class, 'store'])->name('pengajuan.store');
 
+        Route::get('/pengajuan/{pengajuan}/download', [PengajuanSuratController::class, 'download'])->name('pengajuan.download');
+
         Route::get('/logout', [LogoutController::class, 'logout'])->name('logout');
     });
 });
@@ -40,7 +43,7 @@ Route::as('portal.')->middleware(MainHandler::class)->group(function () {
 // ---------------------------------
 
 // SYSTEM (Admin/Internal)
-Route::prefix('system')->as('system.')->middleware(MainHandler::class)->group(function () {
+Route::prefix('admin')->as('system.')->middleware(MainHandler::class)->group(function () {
     Route::middleware(GuestAdmin::class)->group(function () {
         Route::get('/login', [SystemLoginController::class, 'index'])->name('login.index');
         Route::post('/login', [SystemLoginController::class, 'validate'])->name('login.validate');
@@ -54,6 +57,13 @@ Route::prefix('system')->as('system.')->middleware(MainHandler::class)->group(fu
 
         Route::patch('/penduduk/{penduduk}/status', [PendudukController::class, 'updateStatus'])->name('penduduk.status');
         Route::resource('penduduk', PendudukController::class)->except(['show', 'destroy']);
+
+        Route::get('/pengajuan', [SystemPengajuanSuratController::class, 'index'])->name('pengajuan.index');
+        Route::get('/pengajuan/{pengajuan}', [SystemPengajuanSuratController::class, 'show'])->name('pengajuan.show');
+        Route::patch('/pengajuan/{pengajuan}/verifikasi', [SystemPengajuanSuratController::class, 'verifikasi'])->name('pengajuan.verifikasi');
+        Route::patch('/pengajuan/{pengajuan}/selesai', [SystemPengajuanSuratController::class, 'selesai'])->name('pengajuan.selesai');
+        Route::patch('/pengajuan/{pengajuan}/tolak', [SystemPengajuanSuratController::class, 'tolak'])->name('pengajuan.tolak');
+        Route::get('/pengajuan/{pengajuan}/lampiran/{lampiran}', [SystemPengajuanSuratController::class, 'lampiran'])->name('pengajuan.lampiran');
 
         Route::get('/logout', [SystemLogoutController::class, 'logout'])->name('logout');
     });

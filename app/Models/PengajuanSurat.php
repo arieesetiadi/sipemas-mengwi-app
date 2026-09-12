@@ -27,6 +27,7 @@ class PengajuanSurat extends Model
             'status_perkawinan' => StatusPerkawinan::class,
             'diverifikasi_pada' => 'datetime',
             'ditolak_pada' => 'datetime',
+            'disetujui_pada' => 'datetime',
         ];
     }
 
@@ -59,5 +60,10 @@ class PengajuanSurat extends Model
     public function ditolakOleh(): BelongsTo
     {
         return $this->belongsTo(Admin::class, 'ditolak_oleh');
+    }
+
+    public function disetujuiOleh(): BelongsTo
+    {
+        return $this->belongsTo(Admin::class, 'disetujui_oleh');
     }
 }

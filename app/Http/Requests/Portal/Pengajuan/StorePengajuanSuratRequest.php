@@ -25,6 +25,8 @@ class StorePengajuanSuratRequest extends FormRequest
     {
         $rules = [
             'catatan' => ['nullable', 'string', 'max:255'],
+            'lampiran_ktp' => ['required', 'file', 'mimes:jpg,jpeg,png,pdf', 'max:2048'],
+            'lampiran_kk' => ['required', 'file', 'mimes:jpg,jpeg,png,pdf', 'max:2048'],
         ];
 
         return match ($this->route('jenisSurat')->kode) {
@@ -60,6 +62,12 @@ class StorePengajuanSuratRequest extends FormRequest
             'keperluan.required' => 'Keperluan wajib diisi.',
             'keperluan.max' => 'Keperluan maksimal 255 karakter.',
             'catatan.max' => 'Catatan maksimal 255 karakter.',
+            'lampiran_ktp.required' => 'File KTP wajib diunggah.',
+            'lampiran_ktp.mimes' => 'KTP harus berupa JPG, PNG, atau PDF.',
+            'lampiran_ktp.max' => 'Ukuran KTP maksimal 2MB.',
+            'lampiran_kk.required' => 'File KK wajib diunggah.',
+            'lampiran_kk.mimes' => 'KK harus berupa JPG, PNG, atau PDF.',
+            'lampiran_kk.max' => 'Ukuran KK maksimal 2MB.',
         ];
     }
 }

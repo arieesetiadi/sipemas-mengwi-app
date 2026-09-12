@@ -28,6 +28,7 @@ return new class extends Migration
             $table->enum('status', StatusSurat::values())->default(StatusSurat::Diajukan);
             $table->string('nomor_surat')->nullable()->unique();
             $table->tinyText('catatan')->nullable();
+            $table->text('catatan_penolakan')->nullable();
 
             $table->enum('status_perkawinan', StatusPerkawinan::values())->nullable();
 
@@ -42,6 +43,9 @@ return new class extends Migration
 
             $table->foreignId('ditolak_oleh')->nullable()->constrained('admins', 'id')->nullOnDelete();
             $table->timestamp('ditolak_pada')->nullable();
+
+            $table->foreignId('disetujui_oleh')->nullable()->constrained('admins', 'id')->nullOnDelete();
+            $table->timestamp('disetujui_pada')->nullable();
 
             $table->timestamps();
         });

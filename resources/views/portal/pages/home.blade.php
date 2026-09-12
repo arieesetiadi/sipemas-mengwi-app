@@ -70,7 +70,8 @@
                                         Semua <span class="badge bg-dark">{{ $pengajuan->count() }}</span>
                                     </button>
                                     @foreach (StatusSurat::cases() as $statusSurat)
-                                        <button type="button" class="btn btn-sm btn-light filter-status" data-status="{{ $statusSurat->value }}">
+                                        <button type="button" class="btn btn-sm btn-light filter-status" data-status="{{ $statusSurat->value }}"
+                                            @if ($statusSurat->keterangan()) data-bs-toggle="tooltip" title="{{ $statusSurat->keterangan() }}" @endif>
                                             {{ $statusSurat->value }}
                                             <span class="badge {{ $statusSurat->badgeClass() }}">{{ $statusCounts->get($statusSurat->value, 0) }}</span>
                                         </button>
@@ -93,22 +94,36 @@
                                                 <td>{{ $item->jenisSurat?->label ?? '-' }}</td>
                                                 <td data-order="{{ $item->created_at?->format('Y-m-d H:i:s') }}">{{ $item->created_at?->format('d M Y') }}</td>
                                                 <td>{{ $item->nomor_surat ?? '-' }}</td>
-                                                <td><span class="badge {{ $item->status->badgeClass() }} w-100 pt-2">{{ $item->status->value }}</span></td>
                                                 <td>
-                                                    <button type="button" class="btn btn-sm btn-light btn-lihat"
-                                                        data-jenis="{{ $item->jenisSurat?->label ?? '-' }}"
-                                                        data-kode="{{ $item->jenisSurat?->kode ?? '' }}"
-                                                        data-tanggal="{{ $item->created_at?->format('d M Y') }}"
-                                                        data-nomor="{{ $item->nomor_surat ?? '-' }}"
-                                                        data-status="{{ $item->status->value }}"
-                                                        data-status-perkawinan="{{ $item->status_perkawinan?->value ?? '-' }}"
-                                                        data-nama-usaha="{{ $item->nama_usaha ?? '-' }}"
-                                                        data-lokasi-usaha="{{ $item->lokasi_usaha ?? '-' }}"
-                                                        data-tujuan="{{ $item->tujuan_instansi ?? '-' }}"
-                                                        data-keperluan="{{ $item->keperluan ?? '-' }}"
-                                                        data-catatan="{{ $item->catatan ?? '-' }}">
-                                                        Lihat
-                                                    </button>
+                                                    <span class="badge {{ $item->status->badgeClass() }} w-100 pt-2"
+                                                        @if ($item->status->keterangan()) data-bs-toggle="tooltip" title="{{ $item->status->keterangan() }}" @endif>
+                                                        {{ $item->status->value }}
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    <div class="d-flex gap-2">
+                                                        <button type="button" class="btn btn-sm btn-light btn-lihat"
+                                                            data-jenis="{{ $item->jenisSurat?->label ?? '-' }}"
+                                                            data-kode="{{ $item->jenisSurat?->kode ?? '' }}"
+                                                            data-tanggal="{{ $item->created_at?->format('d M Y') }}"
+                                                            data-nomor="{{ $item->nomor_surat ?? '-' }}"
+                                                            data-status="{{ $item->status->value }}"
+                                                            data-status-perkawinan="{{ $item->status_perkawinan?->value ?? '-' }}"
+                                                            data-nama-usaha="{{ $item->nama_usaha ?? '-' }}"
+                                                            data-lokasi-usaha="{{ $item->lokasi_usaha ?? '-' }}"
+                                                            data-tujuan="{{ $item->tujuan_instansi ?? '-' }}"
+                                                            data-keperluan="{{ $item->keperluan ?? '-' }}"
+                                                            data-catatan="{{ $item->catatan ?? '-' }}"
+                                                            data-ditolak-pada="{{ $item->ditolak_pada?->format('d M Y H:i') ?? '-' }}"
+                                                            data-ditolak-oleh="{{ $item->ditolakOleh?->nama ?? '-' }}"
+                                                            data-catatan-penolakan="{{ $item->catatan_penolakan ?? '-' }}">
+                                                            Lihat
+                                                        </button>
+                                                        @if ($item->status === StatusSurat::Selesai)
+                                                            <a href="{{ route('portal.pengajuan.download', $item) }}"
+                                                                class="btn btn-sm btn-success">Download</a>
+                                                        @endif
+                                                    </div>
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -155,6 +170,17 @@
                     <div id="detail-catatan-wrapper" class="mb-3 d-none">
                         <small class="text-muted d-block">Catatan</small>
                         <p id="detail-catatan" class="mb-0">-</p>
+                    </div>
+
+                    <div id="detail-penolakan-wrapper" class="mb-3 d-none">
+                        <hr>
+                        <h6 class="fw-bold text-danger mb-2">Penolakan</h6>
+                        <small class="text-muted d-block">Ditolak Pada</small>
+                        <strong id="detail-ditolak-pada">-</strong>
+                        <small class="text-muted d-block mt-2">Ditolak Oleh</small>
+                        <strong id="detail-ditolak-oleh">-</strong>
+                        <small class="text-muted d-block mt-2">Catatan Penolakan</small>
+                        <p id="detail-catatan-penolakan" class="mb-0">-</p>
                     </div>
                 </hr>
                 <div class="modal-footer">
@@ -293,7 +319,18 @@
                     $('#detail-catatan-wrapper').addClass('d-none');
                 }
 
-                renderTimeline($(this).data('status'));
+                var status = $(this).data('status');
+
+                if (status === 'Ditolak') {
+                    $('#detail-ditolak-pada').text($(this).data('ditolak-pada'));
+                    $('#detail-ditolak-oleh').text($(this).data('ditolak-oleh'));
+                    $('#detail-catatan-penolakan').text($(this).data('catatan-penolakan'));
+                    $('#detail-penolakan-wrapper').removeClass('d-none');
+                } else {
+                    $('#detail-penolakan-wrapper').addClass('d-none');
+                }
+
+                renderTimeline(status);
 
                 new bootstrap.Modal(document.getElementById('pengajuanModal')).show();
             });
