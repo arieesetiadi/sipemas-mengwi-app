@@ -77,11 +77,10 @@ class PengajuanSuratSeeder extends Seeder
         }
     }
 
-    // bikin nomor surat format {kode}/{tahun}/{3 digit}, counter per jenis
     private function buatNomorSurat(string $kode, array &$urutan): string
     {
         $urutan[$kode] = ($urutan[$kode] ?? 0) + 1;
 
-        return $kode . '/' . now()->year . '/' . str_pad((string) $urutan[$kode], 3, '0', STR_PAD_LEFT);
+        return $kode . '/MENGWI/' . str_pad((string) $urutan[$kode], 3, '0', STR_PAD_LEFT) . '/' . now()->year;
     }
 }

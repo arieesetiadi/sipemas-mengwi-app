@@ -129,18 +129,24 @@ class PengajuanSuratController extends Controller
 
     private function generateNomorSurat(PengajuanSurat $pengajuan): string
     {
+        $kode = $pengajuan->jenisSurat->kode;
         $tahun = now()->year;
-        $prefix = $pengajuan->jenisSurat->kode . '/' . $tahun . '/';
 
-        // ambil nomor terakhir utk jenis surat & tahun yg sama, lalu +1
+        $prefix = $kode . '/MENGWI/';
+
         $terakhir = PengajuanSurat::where('jenis_surat_id', $pengajuan->jenis_surat_id)
             ->where('status', StatusSurat::Selesai)
-            ->where('nomor_surat', 'like', $prefix . '%')
+            ->where('nomor_surat', 'like', $prefix . '%/' . $tahun)
             ->orderByDesc('nomor_surat')
             ->value('nomor_surat');
 
-        $urutan = $terakhir ? ((int) substr($terakhir, -3)) + 1 : 1;
+        $urutan = 1;
 
-        return $prefix . str_pad((string) $urutan, 3, '0', STR_PAD_LEFT);
+        if ($terakhir) {
+            $segmen = explode('/', $terakhir);
+            $urutan = ((int) ($segmen[2] ?? 0)) + 1;
+        }
+
+        return $prefix . str_pad((string) $urutan, 3, '0', STR_PAD_LEFT) . '/' . $tahun;
     }
 }

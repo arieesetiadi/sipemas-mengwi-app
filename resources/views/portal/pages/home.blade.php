@@ -120,7 +120,7 @@
                                                             Lihat
                                                         </button>
                                                         @if ($item->status === StatusSurat::Selesai)
-                                                            <a href="{{ route('portal.pengajuan.download', $item) }}"
+                                                            <a target="_blank" href="{{ route('portal.pengajuan.download', $item) }}"
                                                                 class="btn btn-sm btn-success">Download</a>
                                                         @endif
                                                         @if ($item->status === StatusSurat::Ditolak)

@@ -3,14 +3,17 @@
 namespace App\Http\Controllers\Portal;
 
 use App\Enums\JenisLampiran;
+use App\Enums\Role;
 use App\Enums\StatusPerkawinan;
 use App\Enums\StatusSurat;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Portal\Pengajuan\StorePengajuanSuratRequest;
 use App\Http\Requests\Portal\Pengajuan\UpdatePengajuanSuratRequest;
+use App\Models\Admin;
 use App\Models\JenisSurat;
 use App\Models\Lampiran;
 use App\Models\PengajuanSurat;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Storage;
 
@@ -120,7 +123,25 @@ class PengajuanSuratController extends Controller
     public function download(PengajuanSurat $pengajuan)
     {
         abort_unless($pengajuan->penduduk_id === auth('portal')->id(), 404);
+        abort_unless($pengajuan->status === StatusSurat::Selesai, 404);
 
-        dd($pengajuan->load(['penduduk', 'jenisSurat', 'lampiran']));
+        $pengajuan->load(['penduduk.banjar', 'jenisSurat']);
+
+        $view = match ($pengajuan->jenisSurat->kode) {
+            'SKD' => 'portal.surat.domisili',
+            'SKU' => 'portal.surat.usaha',
+            'SP' => 'portal.surat.pengantar',
+            default => abort(404),
+        };
+
+        $perbekelNama = Admin::whereRelation('role', 'label', Role::Perbekel->value)->value('nama');
+
+        $tanggalSurat = ($pengajuan->disetujui_pada ?? now())->locale('id')->translatedFormat('d F Y');
+
+        return Pdf::loadView($view, [
+            'pengajuan' => $pengajuan,
+            'perbekelNama' => $perbekelNama,
+            'tanggalSurat' => $tanggalSurat,
+        ])->stream('surat-' . strtolower($pengajuan->jenisSurat->kode) . '.pdf');
     }
 }
