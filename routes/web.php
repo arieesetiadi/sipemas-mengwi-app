@@ -5,6 +5,7 @@ use App\Http\Controllers\Portal\HomeController;
 use App\Http\Controllers\Portal\LoginController;
 use App\Http\Controllers\Portal\LogoutController;
 use App\Http\Controllers\Portal\PengajuanSuratController;
+use App\Http\Controllers\Portal\ProfilController;
 use App\Http\Controllers\Portal\RegisterController;
 use App\Http\Controllers\System\AdminController;
 use App\Http\Controllers\System\DashboardController;
@@ -12,6 +13,7 @@ use App\Http\Controllers\System\LoginController as SystemLoginController;
 use App\Http\Controllers\System\LogoutController as SystemLogoutController;
 use App\Http\Controllers\System\PendudukController;
 use App\Http\Controllers\System\PengajuanSuratController as SystemPengajuanSuratController;
+use App\Http\Controllers\System\ProfilController as SystemProfilController;
 use App\Http\Middleware\AuthenticateAdmin;
 use App\Http\Middleware\AuthenticatePortal;
 use App\Http\Middleware\GuestAdmin;
@@ -30,6 +32,9 @@ Route::as('portal.')->middleware(MainHandler::class)->group(function () {
 
     Route::middleware(AuthenticatePortal::class)->group(function () {
         Route::get('/', [HomeController::class, 'index'])->name('home');
+
+        Route::get('/profil', [ProfilController::class, 'edit'])->name('profil.edit');
+        Route::patch('/profil', [ProfilController::class, 'update'])->name('profil.update');
 
         Route::get('/pengajuan/{jenisSurat}/create', [PengajuanSuratController::class, 'create'])->name('pengajuan.create');
         Route::post('/pengajuan/{jenisSurat}', [PengajuanSuratController::class, 'store'])->name('pengajuan.store');
@@ -55,6 +60,9 @@ Route::prefix('admin')->as('system.')->middleware(MainHandler::class)->group(fun
 
     Route::middleware(AuthenticateAdmin::class)->group(function () {
         Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+
+        Route::get('/profil', [SystemProfilController::class, 'edit'])->name('profil.edit');
+        Route::patch('/profil', [SystemProfilController::class, 'update'])->name('profil.update');
 
         Route::patch('/admin/{admin}/status', [AdminController::class, 'updateStatus'])->name('admin.status');
         Route::resource('admin', AdminController::class)->except(['show', 'destroy']);

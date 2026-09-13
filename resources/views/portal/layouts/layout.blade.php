@@ -77,7 +77,7 @@
                                             <hr class="dropdown-divider">
                                         </li>
                                         <li>
-                                            <a class="dropdown-item align-items-center d-flex gap-2" href="#">
+                                            <a class="dropdown-item align-items-center d-flex gap-2" href="{{ route('portal.profil.edit') }}">
                                                 Edit Profil
                                             </a>
                                         </li>

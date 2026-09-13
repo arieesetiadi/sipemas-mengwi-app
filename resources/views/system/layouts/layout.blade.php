@@ -18,7 +18,7 @@
             <div class="logo">
                 <a href="{{ route('system.dashboard') }}" class="logo-icon"><span class="logo-text">System</span></a>
                 <div class="sidebar-user-switcher user-activity-online">
-                    <a href="#">
+                    <a href="{{ route('system.profil.edit') }}">
                         <img src="{{ asset('assets/images/avatars/user.png') }}" />
                         <span class="activity-indicator"></span>
                         <span class="user-info-text">
