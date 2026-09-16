@@ -12,7 +12,7 @@
             </div>
 
             <div class="row mb-4">
-                <div class="col-12 col-md-6 col-xl-3">
+                <div class="col-12 col-md-4">
                     <div class="card widget widget-stats h-100 mb-0">
                         <div class="card-body">
                             <div class="widget-stats-container d-flex">
@@ -28,7 +28,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-12 col-md-6 col-xl-3">
+                <div class="col-12 col-md-4">
                     <div class="card widget widget-stats h-100 mb-0">
                         <div class="card-body">
                             <div class="widget-stats-container d-flex">
@@ -44,7 +44,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-12 col-md-6 col-xl-3">
+                <div class="col-12 col-md-4">
                     <div class="card widget widget-stats h-100 mb-0">
                         <div class="card-body">
                             <div class="widget-stats-container d-flex">
@@ -60,22 +60,6 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-12 col-md-6 col-xl-3">
-                    <div class="card widget widget-stats h-100 mb-0">
-                        <div class="card-body">
-                            <div class="widget-stats-container d-flex">
-                                <div class="widget-stats-icon widget-stats-icon-warning">
-                                    <i class="material-icons-outlined">summarize</i>
-                                </div>
-                                <div class="widget-stats-content flex-fill">
-                                    <span class="widget-stats-title">Total Periode Ini</span>
-                                    <span class="widget-stats-amount">{{ $ringkasan['totalPeriodeIni'] }}</span>
-                                    <span class="widget-stats-info">Pengajuan masuk bulan ini</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
 
             <div class="row">
@@ -83,6 +67,7 @@
                     <div class="card">
                         <div class="card-header">
                             <h5 class="card-title mb-0">Rekap Laporan per Jenis Surat</h5>
+                            <p class="card-text fw-normal text-muted">*hanya surat yang statusnya sudah diterbitkan.</p>
                         </div>
                         <div class="card-body">
                             <form method="GET" action="{{ route('system.dashboard') }}" class="row g-2 align-items-center mb-4">

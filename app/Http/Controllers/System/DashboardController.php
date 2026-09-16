@@ -30,10 +30,6 @@ class DashboardController extends Controller
                 ->whereYear('ditolak_pada', $sekarang->year)
                 ->whereMonth('ditolak_pada', $sekarang->month)
                 ->count(),
-            'totalPeriodeIni' => PengajuanSurat::query()
-                ->whereYear('created_at', $sekarang->year)
-                ->whereMonth('created_at', $sekarang->month)
-                ->count(),
         ];
 
         $pengajuanTindakan = PengajuanSurat::query()->butuhTindakan()

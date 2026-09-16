@@ -75,6 +75,44 @@ class PengajuanSuratSeeder extends Seeder
                 );
             }
         }
+
+        foreach ($detailPerJenis as $kode => $detail) {
+            $jenisSurat = JenisSurat::where('kode', $kode)->first();
+
+            if (! $jenisSurat) {
+                continue;
+            }
+
+            $urutanSelesai[$kode] = PengajuanSurat::query()
+                ->where('jenis_surat_id', $jenisSurat->id)
+                ->where('status', StatusSurat::Selesai)
+                ->where('nomor_surat', 'like', '%/' . now()->year)
+                ->count();
+
+            $jumlah = random_int(1, 10);
+
+            for ($i = 0; $i < $jumlah; $i++) {
+                $disetujuiPada = now()->startOfYear()
+                    ->addDays(random_int(0, now()->dayOfYear - 1))
+                    ->setTime(random_int(8, 16), random_int(0, 59));
+
+                $diajukanPada = $disetujuiPada->copy()->subDays(random_int(1, 14));
+
+                PengajuanSurat::create([
+                    ...$detail,
+                    'penduduk_id' => $penduduk->id,
+                    'jenis_surat_id' => $jenisSurat->id,
+                    'status' => StatusSurat::Selesai,
+                    'nomor_surat' => $this->buatNomorSurat($kode, $urutanSelesai),
+                    'diverifikasi_oleh' => $staf?->id,
+                    'diverifikasi_pada' => $diajukanPada->copy()->addDay(),
+                    'disetujui_oleh' => $pimpinan?->id,
+                    'disetujui_pada' => $disetujuiPada,
+                    'created_at' => $diajukanPada,
+                    'updated_at' => $disetujuiPada,
+                ]);
+            }
+        }
     }
 
     private function buatNomorSurat(string $kode, array &$urutan): string
