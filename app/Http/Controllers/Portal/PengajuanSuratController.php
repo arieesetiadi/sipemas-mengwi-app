@@ -9,12 +9,14 @@ use App\Enums\StatusSurat;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Portal\Pengajuan\StorePengajuanSuratRequest;
 use App\Http\Requests\Portal\Pengajuan\UpdatePengajuanSuratRequest;
+use App\Mail\PengajuanBaru;
 use App\Models\Admin;
 use App\Models\JenisSurat;
 use App\Models\Lampiran;
 use App\Models\PengajuanSurat;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 
 class PengajuanSuratController extends Controller
@@ -62,6 +64,8 @@ class PengajuanSuratController extends Controller
             }
         }
 
+        $this->kirimNotifikasiPengajuanBaru($pengajuan);
+
         return to_route('portal.home')->with('toast', 'Pengajuan ' . $jenisSurat->label . ' berhasil dikirim.');
     }
 
@@ -108,6 +112,8 @@ class PengajuanSuratController extends Controller
             ]);
         }
 
+        $this->kirimNotifikasiPengajuanBaru($pengajuan);
+
         return to_route('portal.home')->with('toast', 'Pengajuan berhasil diajukan ulang.');
     }
 
@@ -143,5 +149,20 @@ class PengajuanSuratController extends Controller
             'perbekelNama' => $perbekelNama,
             'tanggalSurat' => $tanggalSurat,
         ])->stream('surat-' . strtolower($pengajuan->jenisSurat->kode) . '.pdf');
+    }
+
+    private function kirimNotifikasiPengajuanBaru(PengajuanSurat $pengajuan): void
+    {
+        $adminEmails = Admin::query()->active()
+            ->whereHas('role', fn ($query) => $query->whereIn('label', [Role::Staf->value, Role::Sekretaris->value]))
+            ->pluck('email');
+
+        if ($adminEmails->isEmpty()) {
+            return;
+        }
+
+        $pengajuan->load(['penduduk', 'jenisSurat']);
+
+        Mail::to($adminEmails)->send(new PengajuanBaru($pengajuan));
     }
 }

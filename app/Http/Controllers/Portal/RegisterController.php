@@ -4,9 +4,11 @@ namespace App\Http\Controllers\Portal;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Portal\Auth\RegisterRequest;
+use App\Mail\RegistrasiBerhasil;
 use App\Models\Banjar;
 use App\Models\Penduduk;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class RegisterController extends Controller
 {
@@ -38,6 +40,8 @@ class RegisterController extends Controller
         ]);
 
         Auth::guard('portal')->login($penduduk);
+
+        Mail::to($penduduk->email)->send(new RegistrasiBerhasil($penduduk));
 
         return to_route('portal.home')->with('toast', 'Pendaftaran berhasil, selamat datang ' . $penduduk->nama . '!');
     }

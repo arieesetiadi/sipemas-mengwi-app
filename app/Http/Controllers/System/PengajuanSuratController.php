@@ -6,10 +6,13 @@ use App\Enums\Role;
 use App\Enums\StatusSurat;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\System\Pengajuan\TolakPengajuanSuratRequest;
+use App\Mail\PengajuanDitolak;
+use App\Mail\PengajuanSelesai;
 use App\Models\JenisSurat;
 use App\Models\Lampiran;
 use App\Models\PengajuanSurat;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 
 class PengajuanSuratController extends Controller
@@ -79,6 +82,10 @@ class PengajuanSuratController extends Controller
             'nomor_surat' => $this->generateNomorSurat($pengajuan),
         ]);
 
+        $pengajuan->load(['penduduk', 'jenisSurat']);
+
+        Mail::to($pengajuan->penduduk->email)->send(new PengajuanSelesai($pengajuan));
+
         return back()->with('success', 'Surat berhasil diterbitkan.');
     }
 
@@ -107,6 +114,10 @@ class PengajuanSuratController extends Controller
             'ditolak_oleh' => auth('system')->id(),
             'ditolak_pada' => now(),
         ]);
+
+        $pengajuan->load(['penduduk', 'jenisSurat']);
+
+        Mail::to($pengajuan->penduduk->email)->send(new PengajuanDitolak($pengajuan));
 
         return back()->with('success', 'Pengajuan ditolak.');
     }
