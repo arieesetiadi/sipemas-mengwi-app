@@ -202,6 +202,57 @@
                     </div>
                 </div>
             </div>
+
+            @if ($isEdit)
+                <div class="row mt-4">
+                    <div class="col">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="card-title mb-0">Riwayat Pengajuan Surat
+                                    <span class="badge bg-dark">{{ $riwayatPengajuan->count() }}</span>
+                                </h5>
+                            </div>
+                            <div class="card-body">
+                                @if ($riwayatPengajuan->isEmpty())
+                                    <div class="text-center py-4 text-muted">
+                                        Belum ada pengajuan surat dari penduduk ini.
+                                    </div>
+                                @else
+                                    <div class="table-responsive">
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Jenis Surat</th>
+                                                    <th>Tanggal Ajukan</th>
+                                                    <th>Nomor Surat</th>
+                                                    <th>Status</th>
+                                                    <th>Aksi</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach ($riwayatPengajuan as $item)
+                                                    <tr>
+                                                        <td>{{ $item->jenisSurat?->label ?? '-' }}</td>
+                                                        <td>{{ $item->created_at?->format('d M Y') }}</td>
+                                                        <td>{{ $item->nomor_surat ?? '-' }}</td>
+                                                        <td>
+                                                            <span class="badge {{ $item->status->badgeClass() }} w-100 pt-2">{{ $item->status->value }}</span>
+                                                        </td>
+                                                        <td>
+                                                            <a href="{{ route('system.pengajuan.show', $item) }}"
+                                                                class="btn btn-sm btn-light">Tinjau</a>
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @endif
         </div>
     </div>
 @endsection

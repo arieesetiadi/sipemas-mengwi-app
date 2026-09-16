@@ -35,8 +35,9 @@ class PendudukController extends Controller
     public function edit(Penduduk $penduduk)
     {
         $banjar = Banjar::orderBy('label')->get();
+        $riwayatPengajuan = $penduduk->pengajuanSurat()->with('jenisSurat')->latest()->get();
 
-        return view('system.pages.penduduk.form', compact('penduduk', 'banjar'));
+        return view('system.pages.penduduk.form', compact('penduduk', 'banjar', 'riwayatPengajuan'));
     }
 
     public function update(UpdatePendudukRequest $request, Penduduk $penduduk): RedirectResponse
