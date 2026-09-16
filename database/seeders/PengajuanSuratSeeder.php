@@ -18,9 +18,9 @@ class PengajuanSuratSeeder extends Seeder
      */
     public function run(): void
     {
-        $penduduk = Penduduk::where('nik', '0000000000000000')->first();
+        $pendudukList = Penduduk::all();
 
-        if (! $penduduk) {
+        if ($pendudukList->isEmpty()) {
             return;
         }
 
@@ -50,6 +50,13 @@ class PengajuanSuratSeeder extends Seeder
                 continue;
             }
 
+            // lanjutkan penomoran dari surat selesai yang sudah ada tahun ini
+            $urutanSelesai[$kode] = PengajuanSurat::query()
+                ->where('jenis_surat_id', $jenisSurat->id)
+                ->where('status', StatusSurat::Selesai)
+                ->where('nomor_surat', 'like', '%/' . now()->year)
+                ->count();
+
             foreach (StatusSurat::cases() as $status) {
                 $sudahDiverifikasi = in_array($status, [StatusSurat::Diverifikasi, StatusSurat::Selesai]);
                 $sudahSelesai = $status === StatusSurat::Selesai;
@@ -57,7 +64,7 @@ class PengajuanSuratSeeder extends Seeder
 
                 PengajuanSurat::firstOrCreate(
                     [
-                        'penduduk_id' => $penduduk->id,
+                        'penduduk_id' => $pendudukList->random()->id,
                         'jenis_surat_id' => $jenisSurat->id,
                         'status' => $status->value,
                     ],
@@ -100,7 +107,7 @@ class PengajuanSuratSeeder extends Seeder
 
                 PengajuanSurat::create([
                     ...$detail,
-                    'penduduk_id' => $penduduk->id,
+                    'penduduk_id' => $pendudukList->random()->id,
                     'jenis_surat_id' => $jenisSurat->id,
                     'status' => StatusSurat::Selesai,
                     'nomor_surat' => $this->buatNomorSurat($kode, $urutanSelesai),

@@ -59,5 +59,71 @@ class UserSeeder extends Seeder
                 'pekerjaan' => 'Wiraswasta',
             ]
         );
+
+        $pendudukDataset = [
+            [
+                'nik' => '5103010101850001',
+                'nama' => 'I Wayan Surya',
+                'email' => 'wayan.surya@desa.test',
+                'telepon' => '081234567891',
+                'tempat_lahir' => 'Mengwi',
+                'tanggal_lahir' => '1985-03-12',
+                'jenis_kelamin' => JenisKelamin::LakiLaki->value,
+                'pekerjaan' => 'Petani',
+            ],
+            [
+                'nik' => '5103010101900002',
+                'nama' => 'Ni Made Ayu Lestari',
+                'email' => 'made.ayu@desa.test',
+                'telepon' => '081234567892',
+                'tempat_lahir' => 'Mengwi',
+                'tanggal_lahir' => '1990-07-25',
+                'jenis_kelamin' => JenisKelamin::Perempuan->value,
+                'pekerjaan' => 'Pedagang',
+            ],
+            [
+                'nik' => '5103010101880003',
+                'nama' => 'I Gede Putra Wijaya',
+                'email' => 'gede.putra@desa.test',
+                'telepon' => '081234567893',
+                'tempat_lahir' => 'Mengwi',
+                'tanggal_lahir' => '1988-11-02',
+                'jenis_kelamin' => JenisKelamin::LakiLaki->value,
+                'pekerjaan' => 'Karyawan Swasta',
+            ],
+            [
+                'nik' => '5103010101920004',
+                'nama' => 'Ni Luh Kadek Sari',
+                'email' => 'luh.kadek@desa.test',
+                'telepon' => '081234567894',
+                'tempat_lahir' => 'Mengwi',
+                'tanggal_lahir' => '1992-05-18',
+                'jenis_kelamin' => JenisKelamin::Perempuan->value,
+                'pekerjaan' => 'Guru',
+            ],
+            [
+                'nik' => '5103010101870005',
+                'nama' => 'I Ketut Agus Setiawan',
+                'email' => 'ketut.agus@desa.test',
+                'telepon' => '081234567895',
+                'tempat_lahir' => 'Mengwi',
+                'tanggal_lahir' => '1987-09-30',
+                'jenis_kelamin' => JenisKelamin::LakiLaki->value,
+                'pekerjaan' => 'Wiraswasta',
+            ],
+        ];
+
+        foreach ($pendudukDataset as $data) {
+            Penduduk::updateOrCreate(
+                ['nik' => $data['nik']],
+                [
+                    ...$data,
+                    'password' => Hash::make('penduduk'),
+                    'alamat' => $banjar->label . ', Desa Mengwi, Kec. Mengwi, Badung',
+                    'banjar_id' => $banjar->id,
+                    'agama' => Agama::Hindu->value,
+                ]
+            );
+        }
     }
 }
