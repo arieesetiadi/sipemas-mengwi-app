@@ -9,6 +9,7 @@ use App\Http\Controllers\Portal\ProfilController;
 use App\Http\Controllers\Portal\RegisterController;
 use App\Http\Controllers\System\AdminController;
 use App\Http\Controllers\System\DashboardController;
+use App\Http\Controllers\System\LaporanController;
 use App\Http\Controllers\System\LoginController as SystemLoginController;
 use App\Http\Controllers\System\LogoutController as SystemLogoutController;
 use App\Http\Controllers\System\PendudukController;
@@ -76,6 +77,9 @@ Route::prefix('admin')->as('system.')->middleware(MainHandler::class)->group(fun
         Route::patch('/pengajuan/{pengajuan}/selesai', [SystemPengajuanSuratController::class, 'selesai'])->name('pengajuan.selesai');
         Route::patch('/pengajuan/{pengajuan}/tolak', [SystemPengajuanSuratController::class, 'tolak'])->name('pengajuan.tolak');
         Route::get('/pengajuan/{pengajuan}/lampiran/{lampiran}', [SystemPengajuanSuratController::class, 'lampiran'])->name('pengajuan.lampiran');
+
+        Route::get('/laporan/download', [LaporanController::class, 'download'])->name('laporan.download');
+        Route::get('/laporan/cetak', [LaporanController::class, 'cetak'])->name('laporan.cetak');
 
         Route::get('/logout', [SystemLogoutController::class, 'logout'])->name('logout');
     });

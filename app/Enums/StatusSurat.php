@@ -14,7 +14,6 @@ enum StatusSurat: string
         return array_column(self::cases(), 'value');
     }
 
-    // keterangan buat tooltip di view (null = tanpa tooltip)
     public function keterangan(): ?string
     {
         return match ($this) {

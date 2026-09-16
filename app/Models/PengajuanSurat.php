@@ -37,6 +37,12 @@ class PengajuanSurat extends Model
         $query->where('penduduk_id', $pendudukId);
     }
 
+    #[Scope]
+    protected function butuhTindakan(Builder $query): void
+    {
+        $query->whereIn('status', [StatusSurat::Diajukan, StatusSurat::Diverifikasi]);
+    }
+
     public function penduduk(): BelongsTo
     {
         return $this->belongsTo(Penduduk::class);
