@@ -4,7 +4,8 @@
 
 @section('content')
     <div class="app app-auth-sign-in align-content-stretch d-flex flex-wrap justify-content-end">
-        <div class="app-auth-background"></div>
+        <div class="app-auth-background"
+            style="background-image: url('{{ asset('assets/images/auth-admin.png') }}')"></div>
         <div class="app-auth-container">
             <div class="logo">
                 <a href="{{ route('portal.home') }}">SIPEMAS Mengwi</a>

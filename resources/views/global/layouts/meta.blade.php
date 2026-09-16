@@ -5,6 +5,3 @@
 <meta name="keywords" content="sipemas,mengwi,portal,system,penduduk,admin">
 
 <title>@yield('title', 'SIPEMAS Mengwi')</title>
-
-<link rel="icon" type="image/png" sizes="32x32" href="{{ asset('assets/images/neptune.png') }}" />
-<link rel="icon" type="image/png" sizes="16x16" href="{{ asset('assets/images/neptune.png') }}" />
