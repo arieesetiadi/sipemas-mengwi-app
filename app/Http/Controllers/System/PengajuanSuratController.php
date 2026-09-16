@@ -7,6 +7,7 @@ use App\Enums\StatusSurat;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\System\Pengajuan\TolakPengajuanSuratRequest;
 use App\Mail\PengajuanDitolak;
+use App\Mail\PengajuanDiverifikasi;
 use App\Mail\PengajuanSelesai;
 use App\Models\JenisSurat;
 use App\Models\Lampiran;
@@ -61,6 +62,10 @@ class PengajuanSuratController extends Controller
             'diverifikasi_oleh' => auth('system')->id(),
             'diverifikasi_pada' => now(),
         ]);
+
+        $pengajuan->load(['penduduk', 'jenisSurat']);
+
+        Mail::to($pengajuan->penduduk->email)->send(new PengajuanDiverifikasi($pengajuan));
 
         return back()->with('success', 'Pengajuan berhasil diverifikasi.');
     }
