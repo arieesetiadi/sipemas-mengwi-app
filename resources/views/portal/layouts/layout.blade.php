@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 
 <head>
     @include('global.layouts.meta')
@@ -9,7 +9,7 @@
     <link href="{{ asset('assets/css/horizontal-menu/horizontal-menu.min.css') }}" rel="stylesheet">
 </head>
 
-<body class="">
+<body>
     <div class="app horizontal-menu align-content-stretch d-flex flex-wrap">
         <div class="app-container">
             <div class="app-header">
@@ -29,34 +29,6 @@
                         </div>
                         <div class="d-flex">
                             <ul class="navbar-nav">
-                                <li class="nav-item align-items-center d-flex hidden-on-mobile">
-                                    <a class="nav-link nav-notifications-toggle" id="notificationsDropDown"
-                                        href="#" data-bs-toggle="dropdown">4</a>
-                                    <div class="dropdown-menu dropdown-menu-end notifications-dropdown"
-                                        aria-labelledby="notificationsDropDown">
-                                        <h6 class="dropdown-header">Notifications</h6>
-                                        <div class="notifications-dropdown-list">
-                                            @foreach (range(1, 5) as $item)
-                                                <a href="#">
-                                                    <div class="notifications-dropdown-item">
-                                                        <div class="notifications-dropdown-item-image">
-                                                            <span class="notifications-badge bg-info text-white">
-                                                                <i class="material-icons-outlined">campaign</i>
-                                                            </span>
-                                                        </div>
-                                                        <div class="notifications-dropdown-item-text">
-                                                            <p class="bold-notifications-text">
-                                                                Donec tempus nisi sed erat
-                                                                vestibulum, eu suscipit ex laoreet
-                                                            </p>
-                                                            <small>19:00</small>
-                                                        </div>
-                                                    </div>
-                                                </a>
-                                            @endforeach
-                                        </div>
-                                    </div>
-                                </li>
                                 <li class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle text-white" href="#" id="userDropDown"
                                         data-bs-toggle="dropdown">
@@ -107,17 +79,6 @@
                                 Home
                             </a>
                         </li>
-                        <li>
-                            <a href="#">Pages<i class="material-icons has-sub-menu">keyboard_arrow_down</i></a>
-                            <ul class="sub-menu">
-                                <li>
-                                    <a href="#">Page 1</a>
-                                </li>
-                                <li>
-                                    <a href="#">Page 2</a>
-                                </li>
-                            </ul>
-                        </li>
                     </ul>
                 </div>
             </div>
@@ -126,8 +87,6 @@
             </div>
         </div>
     </div>
-
-    <script src="{{ asset('assets/plugins/apexcharts/apexcharts.min.js') }}"></script>
 
     @include('global.layouts.scripts')
 </body>

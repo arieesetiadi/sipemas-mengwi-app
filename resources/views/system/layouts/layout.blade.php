@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="id">
 
 <head>
     @include('global.layouts.meta')
@@ -8,7 +8,6 @@
 </head>
 
 @php
-    $isLoggedIn = auth('system')->check();
     $admin = auth('system')->user();
 @endphp
 
@@ -16,7 +15,7 @@
     <div class="app align-content-stretch d-flex flex-wrap">
         <div class="app-sidebar">
             <div class="logo">
-                <a href="{{ route('system.dashboard') }}" class="logo-icon"><span class="logo-text">System</span></a>
+                <a href="{{ route('system.dashboard') }}" class="logo-icon"><span class="logo-text">SIPEMAS</span></a>
                 <div class="sidebar-user-switcher user-activity-online">
                     <a href="{{ route('system.profil.edit') }}">
                         <img src="{{ asset('assets/images/avatars/user.png') }}" />
@@ -31,26 +30,12 @@
             </div>
             <div class="app-menu">
                 <ul class="accordion-menu">
-                    <li class="sidebar-title">Apps</li>
+                    <li class="sidebar-title">Utama</li>
                     <li class="{{ request()->routeIs('system.dashboard') ? 'active-page' : '' }}">
                         <a href="{{ route('system.dashboard') }}" class="{{ request()->routeIs('system.dashboard') ? 'active' : '' }}">
                             <i class="material-icons-two-tone">dashboard</i>
                             Dashboard
                         </a>
-                    </li>
-                    <li>
-                        <a href="">
-                            <i class="material-icons-two-tone">star</i>Pages
-                            <i class="material-icons has-sub-menu">keyboard_arrow_right</i>
-                        </a>
-                        <ul class="sub-menu">
-                            <li>
-                                <a href="#">Page 1</a>
-                            </li>
-                            <li>
-                                <a href="#">Page 2</a>
-                            </li>
-                        </ul>
                     </li>
                     <li class="sidebar-title">Layanan</li>
                     <li class="{{ request()->routeIs('system.pengajuan.*') ? 'active-page' : '' }}">
@@ -97,51 +82,12 @@
                                 </li>
                             </ul>
                         </div>
-                        <div class="d-flex">
-                            <ul class="navbar-nav">
-                                <li class="nav-item hidden-on-mobile">
-                                    <a class="nav-link nav-notifications-toggle" id="notificationsDropDown"
-                                        href="#" data-bs-toggle="dropdown">4</a>
-                                    <div class="dropdown-menu dropdown-menu-end notifications-dropdown"
-                                        aria-labelledby="notificationsDropDown">
-                                        <h6 class="dropdown-header">Notifications</h6>
-                                        <div class="notifications-dropdown-list">
-                                            @foreach (range(1, 5) as $item)
-                                                <a href="#">
-                                                    <div
-                                                        class="notifications-dropdown-item {{ $loop->first ? 'bg-light' : '' }}">
-                                                        <div class="notifications-dropdown-item-image">
-                                                            <span class="notifications-badge bg-info text-white">
-                                                                <i class="material-icons-outlined">campaign</i>
-                                                            </span>
-                                                        </div>
-                                                        <div class="notifications-dropdown-item-text">
-                                                            <p class="bold-notifications-text">
-                                                                Donec tempus nisi sed erat vestibulum, eu suscipit ex
-                                                                laoreet
-                                                            </p>
-                                                            <small>19:00</small>
-                                                        </div>
-                                                    </div>
-                                                </a>
-                                            @endforeach
-                                        </div>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
                     </div>
                 </nav>
             </div>
             <div class="app-content">@yield('content')</div>
         </div>
     </div>
-
-    <script>
-        const baseUrl = "{{ url('/') }}";
-        const csrfToken = "{{ csrf_token() }}";
-        const toastText = `{{ session('toast') }}`;
-    </script>
 
     {{-- plugin khusus layout system --}}
     <script src="{{ asset('assets/plugins/apexcharts/apexcharts.min.js') }}"></script>
