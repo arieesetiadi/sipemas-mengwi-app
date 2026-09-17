@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\System;
 
-use App\Enums\Role;
 use App\Http\Controllers\Controller;
 use App\Models\JenisSurat;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -13,8 +12,6 @@ class LaporanController extends Controller
 {
     public function download(Request $request)
     {
-        abort_unless(! $this->isPerbekel(), 403);
-
         $data = $this->rekapData($request);
 
         return Pdf::loadView('system.pages.laporan.rekap-pdf', $data)
@@ -23,8 +20,6 @@ class LaporanController extends Controller
 
     public function cetak(Request $request)
     {
-        abort_unless(! $this->isPerbekel(), 403);
-
         return view('system.pages.laporan.rekap-print', $this->rekapData($request));
     }
 
@@ -51,10 +46,5 @@ class LaporanController extends Controller
         } catch (\Throwable) {
             return now()->startOfMonth();
         }
-    }
-
-    private function isPerbekel(): bool
-    {
-        return auth('system')->user()->role?->label === Role::Perbekel->value;
     }
 }

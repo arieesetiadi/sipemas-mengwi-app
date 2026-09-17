@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\System;
 
+use App\Enums\Role;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\System\Penduduk\StorePendudukRequest;
 use App\Http\Requests\System\Penduduk\UpdatePendudukRequest;
@@ -15,7 +16,9 @@ class PendudukController extends Controller
     {
         $penduduk = Penduduk::with('banjar')->latest()->get();
 
-        return view('system.pages.penduduk.index', compact('penduduk'));
+        $bolehKelola = in_array(auth('system')->user()->role?->label, [Role::Staf->value, Role::Sekretaris->value]);
+
+        return view('system.pages.penduduk.index', compact('penduduk', 'bolehKelola'));
     }
 
     public function create()
@@ -49,10 +52,6 @@ class PendudukController extends Controller
 
     public function updateStatus(Penduduk $penduduk): RedirectResponse
     {
-        if ($penduduk->id === auth('system')->id()) {
-            return back()->with('error', 'Tidak bisa menonaktifkan akun sendiri.');
-        }
-
         $penduduk->update(['is_active' => ! $penduduk->is_active]);
 
         return back()->with('success', 'Status penduduk berhasil diubah.');

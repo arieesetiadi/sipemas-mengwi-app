@@ -1,3 +1,4 @@
+@use('App\Enums\Role')
 <!doctype html>
 <html lang="id">
 
@@ -9,6 +10,7 @@
 
 @php
     $admin = auth('system')->user();
+    $isPerbekel = $admin?->role?->label === Role::Perbekel->value;
 @endphp
 
 <body>
@@ -46,13 +48,15 @@
                         </a>
                     </li>
                     <li class="sidebar-title">Data Master</li>
-                    <li class="{{ request()->routeIs('system.admin.*') ? 'active-page' : '' }}">
-                        <a href="{{ route('system.admin.index') }}"
-                            class="{{ request()->routeIs('system.admin.*') ? 'active' : '' }}">
-                            <i class="material-icons-two-tone">group</i>
-                            Admin
-                        </a>
-                    </li>
+                    @if ($isPerbekel)
+                        <li class="{{ request()->routeIs('system.admin.*') ? 'active-page' : '' }}">
+                            <a href="{{ route('system.admin.index') }}"
+                                class="{{ request()->routeIs('system.admin.*') ? 'active' : '' }}">
+                                <i class="material-icons-two-tone">group</i>
+                                Admin
+                            </a>
+                        </li>
+                    @endif
                     <li class="{{ request()->routeIs('system.penduduk.*') ? 'active-page' : '' }}">
                         <a href="{{ route('system.penduduk.index') }}"
                             class="{{ request()->routeIs('system.penduduk.*') ? 'active' : '' }}">

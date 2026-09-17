@@ -11,9 +11,11 @@
                 <div class="col">
                     <div class="page-description d-flex justify-content-between align-items-center">
                         <h1>Data Penduduk</h1>
-                        <a href="{{ route('system.penduduk.create') }}" class="btn btn-primary">
-                            <i class="material-icons">add</i> Tambah Penduduk
-                        </a>
+                        @if ($bolehKelola)
+                            <a href="{{ route('system.penduduk.create') }}" class="btn btn-primary">
+                                <i class="material-icons">add</i> Tambah Penduduk
+                            </a>
+                        @endif
                     </div>
                 </div>
             </div>
@@ -44,7 +46,9 @@
                                         <th>Telepon</th>
                                         <th>Banjar</th>
                                         <th>Status</th>
-                                        <th>Aksi</th>
+                                        @if ($bolehKelola)
+                                            <th>Aksi</th>
+                                        @endif
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -62,16 +66,18 @@
                                                     <span class="badge bg-danger w-100 pt-2">Nonaktif</span>
                                                 @endif
                                             </td>
-                                            <td class="d-flex gap-2">
-                                                <a href="{{ route('system.penduduk.edit', $penduduk) }}"
-                                                    class="btn btn-sm btn-light">Edit</a>
-                                                <button type="button" class="btn btn-sm w-100 {{ $penduduk->is_active ? 'btn-danger' : 'btn-success' }} btn-toggle-status"
-                                                    data-penduduk-id="{{ $penduduk->id }}"
-                                                    data-penduduk-nama="{{ $penduduk->nama }}"
-                                                    data-status="{{ $penduduk->is_active ? 'nonaktif' : 'aktif' }}">
-                                                    {{ $penduduk->is_active ? 'Nonaktifkan' : 'Aktifkan' }}
-                                                </button>
-                                            </td>
+                                            @if ($bolehKelola)
+                                                <td class="d-flex gap-2">
+                                                    <a href="{{ route('system.penduduk.edit', $penduduk) }}"
+                                                        class="btn btn-sm btn-light">Edit</a>
+                                                    <button type="button" class="btn btn-sm w-100 {{ $penduduk->is_active ? 'btn-danger' : 'btn-success' }} btn-toggle-status"
+                                                        data-penduduk-id="{{ $penduduk->id }}"
+                                                        data-penduduk-nama="{{ $penduduk->nama }}"
+                                                        data-status="{{ $penduduk->is_active ? 'nonaktif' : 'aktif' }}">
+                                                        {{ $penduduk->is_active ? 'Nonaktifkan' : 'Aktifkan' }}
+                                                    </button>
+                                                </td>
+                                            @endif
                                         </tr>
                                     @endforeach
                                 </tbody>
