@@ -2,6 +2,8 @@
 
 @use('App\Enums\Agama')
 @use('App\Enums\JenisKelamin')
+@use('App\Enums\JenisLampiran')
+@use('App\Enums\StatusPerkawinan')
 @use('Illuminate\Support\Carbon')
 
 @section('title', 'Edit Profil - SIPEMAS Mengwi')
@@ -32,7 +34,7 @@
 
             <div class="card">
                 <div class="card-body">
-                    <form id="profil-form" action="{{ route('portal.profil.update') }}" method="POST" novalidate>
+                    <form id="profil-form" action="{{ route('portal.profil.update') }}" method="POST" enctype="multipart/form-data" novalidate>
                         @csrf
                         @method('PATCH')
 
@@ -112,6 +114,23 @@
                             </div>
 
                             <div class="col-md-6">
+                                <label for="status_perkawinan" class="form-label">Status Perkawinan <span class="text-danger">*</span></label>
+                                <select name="status_perkawinan" id="status_perkawinan"
+                                    class="form-select @error('status_perkawinan') is-invalid @enderror">
+                                    <option value="">-- Pilih Status Perkawinan --</option>
+                                    @foreach (StatusPerkawinan::cases() as $status)
+                                        <option value="{{ $status->value }}"
+                                            {{ old('status_perkawinan', $penduduk->status_perkawinan?->value) == $status->value ? 'selected' : '' }}>
+                                            {{ $status->value }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                @error('status_perkawinan')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="col-md-6">
                                 <label for="pekerjaan" class="form-label">Pekerjaan <span class="text-danger">*</span></label>
                                 <input type="text" name="pekerjaan" id="pekerjaan"
                                     class="form-control @error('pekerjaan') is-invalid @enderror"
@@ -146,6 +165,33 @@
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
+                        </div>
+
+                        <h6 class="fw-bold mb-3">Berkas</h6>
+                        <div class="row g-3 mb-4">
+                            @foreach (JenisLampiran::cases() as $jenis)
+                                @php
+                                    $field = 'lampiran_' . strtolower($jenis->value);
+                                    $path = $penduduk->pathBerkas($jenis);
+                                @endphp
+                                <div class="col-md-6">
+                                    <label for="{{ $field }}" class="form-label">{{ $jenis->value }}</label>
+                                    <input type="file" name="{{ $field }}" id="{{ $field }}"
+                                        accept=".jpg,.jpeg,.png,.pdf"
+                                        class="form-control @error($field) is-invalid @enderror">
+                                    @if ($path)
+                                        <small class="text-muted d-block mt-1">
+                                            Sudah tersimpan.
+                                            <a href="{{ route('portal.berkas.show', $jenis->value) }}" target="_blank">Lihat</a>
+                                        </small>
+                                    @else
+                                        <small class="text-muted d-block mt-1">Belum ada.</small>
+                                    @endif
+                                    @error($field)
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            @endforeach
                         </div>
 
                         <h6 class="fw-bold mb-3">Kontak & Akun</h6>
@@ -204,6 +250,7 @@
                     tanggal_lahir: { required: true, date: true },
                     jenis_kelamin: { required: true },
                     agama: { required: true },
+                    status_perkawinan: { required: true },
                     pekerjaan: { required: true, maxlength: 255 },
                     banjar_id: { required: true },
                     alamat: { required: true, maxlength: 255 },
@@ -223,6 +270,7 @@
                     tanggal_lahir: { required: 'Tanggal lahir wajib diisi.', date: 'Format tanggal lahir tidak valid.' },
                     jenis_kelamin: { required: 'Jenis kelamin wajib dipilih.' },
                     agama: { required: 'Agama wajib dipilih.' },
+                    status_perkawinan: { required: 'Status perkawinan wajib dipilih.' },
                     pekerjaan: { required: 'Pekerjaan wajib diisi.' },
                     banjar_id: { required: 'Banjar wajib dipilih.' },
                     alamat: { required: 'Alamat wajib diisi.' },

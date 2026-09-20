@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\JenisLampiran;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Portal\HomeController;
 use App\Http\Controllers\Portal\LoginController;
@@ -44,7 +45,10 @@ Route::as('portal.')->middleware(MainHandler::class)->group(function () {
         Route::patch('/pengajuan/{pengajuan}', [PengajuanSuratController::class, 'update'])->name('pengajuan.update');
 
         Route::get('/pengajuan/{pengajuan}/download', [PengajuanSuratController::class, 'download'])->name('pengajuan.download');
-        Route::get('/pengajuan/{pengajuan}/lampiran/{lampiran}', [PengajuanSuratController::class, 'lampiran'])->name('pengajuan.lampiran');
+
+        Route::get('/berkas/{jenis}', [PengajuanSuratController::class, 'berkas'])
+            ->name('berkas.show')
+            ->whereIn('jenis', JenisLampiran::values());
 
         Route::get('/logout', [LogoutController::class, 'logout'])->name('logout');
     });
@@ -69,6 +73,9 @@ Route::prefix('admin')->as('system.')->middleware(MainHandler::class)->group(fun
         Route::resource('admin', AdminController::class)->except(['show', 'destroy']);
 
         Route::patch('/penduduk/{penduduk}/status', [PendudukController::class, 'updateStatus'])->name('penduduk.status');
+        Route::get('/penduduk/{penduduk}/berkas/{jenis}', [PendudukController::class, 'berkas'])
+            ->name('penduduk.berkas')
+            ->whereIn('jenis', JenisLampiran::values());
         Route::resource('penduduk', PendudukController::class)->except(['show', 'destroy']);
 
         Route::get('/pengajuan', [SystemPengajuanSuratController::class, 'index'])->name('pengajuan.index');
@@ -76,7 +83,6 @@ Route::prefix('admin')->as('system.')->middleware(MainHandler::class)->group(fun
         Route::patch('/pengajuan/{pengajuan}/verifikasi', [SystemPengajuanSuratController::class, 'verifikasi'])->name('pengajuan.verifikasi');
         Route::patch('/pengajuan/{pengajuan}/selesai', [SystemPengajuanSuratController::class, 'selesai'])->name('pengajuan.selesai');
         Route::patch('/pengajuan/{pengajuan}/tolak', [SystemPengajuanSuratController::class, 'tolak'])->name('pengajuan.tolak');
-        Route::get('/pengajuan/{pengajuan}/lampiran/{lampiran}', [SystemPengajuanSuratController::class, 'lampiran'])->name('pengajuan.lampiran');
 
         Route::get('/laporan/download', [LaporanController::class, 'download'])->name('laporan.download');
         Route::get('/laporan/cetak', [LaporanController::class, 'cetak'])->name('laporan.cetak');

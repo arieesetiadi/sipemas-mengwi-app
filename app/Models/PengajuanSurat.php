@@ -2,17 +2,14 @@
 
 namespace App\Models;
 
-use App\Enums\StatusPerkawinan;
 use App\Enums\StatusSurat;
 use App\Models\Admin;
 use App\Models\JenisSurat;
-use App\Models\Lampiran;
 use App\Models\Penduduk;
 use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class PengajuanSurat extends Model
 {
@@ -24,7 +21,6 @@ class PengajuanSurat extends Model
     {
         return [
             'status' => StatusSurat::class,
-            'status_perkawinan' => StatusPerkawinan::class,
             'diverifikasi_pada' => 'datetime',
             'ditolak_pada' => 'datetime',
             'disetujui_pada' => 'datetime',
@@ -51,11 +47,6 @@ class PengajuanSurat extends Model
     public function jenisSurat(): BelongsTo
     {
         return $this->belongsTo(JenisSurat::class);
-    }
-
-    public function lampiran(): HasMany
-    {
-        return $this->hasMany(Lampiran::class);
     }
 
     public function diverifikasiOleh(): BelongsTo

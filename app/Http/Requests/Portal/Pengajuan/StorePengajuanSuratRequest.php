@@ -25,8 +25,8 @@ class StorePengajuanSuratRequest extends FormRequest
     {
         $rules = [
             'catatan' => ['nullable', 'string', 'max:255'],
-            'lampiran_ktp' => ['required', 'file', 'mimes:jpg,jpeg,png,pdf', 'max:2048'],
-            'lampiran_kk' => ['required', 'file', 'mimes:jpg,jpeg,png,pdf', 'max:2048'],
+            'lampiran_ktp' => [Rule::requiredIf(fn () => blank($this->user('portal')->ktp_path)), 'file', 'mimes:jpg,jpeg,png,pdf', 'max:2048'],
+            'lampiran_kk' => [Rule::requiredIf(fn () => blank($this->user('portal')->kk_path)), 'file', 'mimes:jpg,jpeg,png,pdf', 'max:2048'],
         ];
 
         return match ($this->route('jenisSurat')->kode) {

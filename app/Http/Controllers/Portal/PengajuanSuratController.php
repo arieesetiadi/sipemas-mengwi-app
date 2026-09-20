@@ -12,7 +12,6 @@ use App\Http\Requests\Portal\Pengajuan\UpdatePengajuanSuratRequest;
 use App\Mail\PengajuanBaru;
 use App\Models\Admin;
 use App\Models\JenisSurat;
-use App\Models\Lampiran;
 use App\Models\PengajuanSurat;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\RedirectResponse;
@@ -41,28 +40,24 @@ class PengajuanSuratController extends Controller
 
     public function store(StorePengajuanSuratRequest $request, JenisSurat $jenisSurat): RedirectResponse
     {
+        $penduduk = auth('portal')->user();
+
+        if ($request->filled('status_perkawinan')) {
+            $penduduk->update(['status_perkawinan' => StatusPerkawinan::from($request->status_perkawinan)]);
+        }
+
+        $penduduk->simpanBerkas($request->file('lampiran_ktp'), $request->file('lampiran_kk'));
+
         $pengajuan = PengajuanSurat::create([
-            'penduduk_id' => auth('portal')->id(),
+            'penduduk_id' => $penduduk->id,
             'jenis_surat_id' => $jenisSurat->id,
             'status' => StatusSurat::Diajukan,
-            'status_perkawinan' => $request->filled('status_perkawinan') ? StatusPerkawinan::from($request->status_perkawinan) : null,
             'tujuan_instansi' => $request->filled('tujuan_instansi') ? $request->tujuan_instansi : null,
             'keperluan' => $request->filled('keperluan') ? $request->keperluan : null,
             'nama_usaha' => $request->filled('nama_usaha') ? $request->nama_usaha : null,
             'lokasi_usaha' => $request->filled('lokasi_usaha') ? $request->lokasi_usaha : null,
             'catatan' => $request->filled('catatan') ? $request->catatan : null,
         ]);
-
-        foreach (['lampiran_ktp' => JenisLampiran::KTP, 'lampiran_kk' => JenisLampiran::KK] as $field => $jenis) {
-            if ($request->hasFile($field)) {
-                $path = $request->file($field)->store('lampiran/' . $pengajuan->id, 'local');
-
-                $pengajuan->lampiran()->create([
-                    'jenis_lampiran' => $jenis,
-                    'file_path' => $path,
-                ]);
-            }
-        }
 
         $this->kirimNotifikasiPengajuanBaru($pengajuan);
 
@@ -77,9 +72,16 @@ class PengajuanSuratController extends Controller
             return to_route('portal.home')->with('toast', 'Pengajuan sudah diproses.');
         }
 
+        $penduduk = auth('portal')->user();
+
+        if ($request->filled('status_perkawinan')) {
+            $penduduk->update(['status_perkawinan' => StatusPerkawinan::from($request->status_perkawinan)]);
+        }
+
+        $penduduk->simpanBerkas($request->file('lampiran_ktp'), $request->file('lampiran_kk'));
+
         $pengajuan->update([
             'status' => StatusSurat::Diajukan,
-            'status_perkawinan' => $request->filled('status_perkawinan') ? StatusPerkawinan::from($request->status_perkawinan) : null,
             'tujuan_instansi' => $request->filled('tujuan_instansi') ? $request->tujuan_instansi : null,
             'keperluan' => $request->filled('keperluan') ? $request->keperluan : null,
             'nama_usaha' => $request->filled('nama_usaha') ? $request->nama_usaha : null,
@@ -94,36 +96,18 @@ class PengajuanSuratController extends Controller
             'nomor_surat' => null,
         ]);
 
-        foreach (['lampiran_ktp' => JenisLampiran::KTP, 'lampiran_kk' => JenisLampiran::KK] as $field => $jenis) {
-            if (! $request->hasFile($field)) {
-                continue;
-            }
-
-            foreach ($pengajuan->lampiran()->where('jenis_lampiran', $jenis->value)->get() as $lama) {
-                Storage::disk('local')->delete($lama->file_path);
-                $lama->delete();
-            }
-
-            $path = $request->file($field)->store('lampiran/' . $pengajuan->id, 'local');
-
-            $pengajuan->lampiran()->create([
-                'jenis_lampiran' => $jenis,
-                'file_path' => $path,
-            ]);
-        }
-
         $this->kirimNotifikasiPengajuanBaru($pengajuan);
 
         return to_route('portal.home')->with('toast', 'Pengajuan berhasil diajukan ulang.');
     }
 
-    public function lampiran(PengajuanSurat $pengajuan, Lampiran $lampiran)
+    public function berkas(string $jenis)
     {
-        abort_unless($pengajuan->penduduk_id === auth('portal')->id(), 404);
-        abort_unless($lampiran->pengajuan_surat_id === $pengajuan->id, 404);
-        abort_unless(Storage::disk('local')->exists($lampiran->file_path), 404);
+        $path = auth('portal')->user()->pathBerkas(JenisLampiran::from($jenis));
 
-        return response()->file(Storage::disk('local')->path($lampiran->file_path));
+        abort_unless($path && Storage::disk('local')->exists($path), 404);
+
+        return response()->file(Storage::disk('local')->path($path));
     }
 
     public function download(PengajuanSurat $pengajuan)

@@ -108,7 +108,7 @@
                                                             data-tanggal="{{ $item->created_at?->format('d M Y') }}"
                                                             data-nomor="{{ $item->nomor_surat ?? '-' }}"
                                                             data-status="{{ $item->status->value }}"
-                                                            data-status-perkawinan="{{ $item->status_perkawinan?->value ?? '-' }}"
+                                                            data-status-perkawinan="{{ $item->penduduk?->status_perkawinan?->value ?? '-' }}"
                                                             data-nama-usaha="{{ $item->nama_usaha ?? '-' }}"
                                                             data-lokasi-usaha="{{ $item->lokasi_usaha ?? '-' }}"
                                                             data-tujuan="{{ $item->tujuan_instansi ?? '-' }}"
@@ -259,14 +259,6 @@
                 }
 
                 var inner = '<span class="d-block" style="width:8px;height:8px;border-radius:50%;background:#fff;"></span>';
-
-                if (state === 'done') {
-                    inner = '<i class="material-icons">check</i>';
-                }
-
-                if (state === 'rejected') {
-                    inner = '<i class="material-icons">close</i>';
-                }
 
                 var labelClass = state === 'rejected' ? 'text-danger fw-bold' : '';
 

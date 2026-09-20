@@ -19,7 +19,13 @@ class ProfilController extends Controller
 
     public function update(UpdateProfilRequest $request): RedirectResponse
     {
-        auth('portal')->user()->update($request->validated());
+        $penduduk = auth('portal')->user();
+
+        $data = $request->validated();
+        unset($data['lampiran_ktp'], $data['lampiran_kk']);
+
+        $penduduk->update($data);
+        $penduduk->simpanBerkas($request->file('lampiran_ktp'), $request->file('lampiran_kk'));
 
         return to_route('portal.profil.edit')->with('toast', 'Profil berhasil diperbarui.');
     }

@@ -1,6 +1,7 @@
 @extends('portal.layouts.layout')
 
 @use('App\Enums\JenisKelamin')
+@use('App\Enums\JenisLampiran')
 @use('App\Enums\StatusPerkawinan')
 @use('Illuminate\Support\Carbon')
 
@@ -113,7 +114,7 @@
                                         <option value="">-- Pilih Status Perkawinan --</option>
                                         @foreach (StatusPerkawinan::cases() as $status)
                                             <option value="{{ $status->value }}"
-                                                {{ old('status_perkawinan', $pengajuan?->status_perkawinan?->value) == $status->value ? 'selected' : '' }}>
+                                                {{ old('status_perkawinan', $penduduk->status_perkawinan?->value) == $status->value ? 'selected' : '' }}>
                                                 {{ $status->value }}
                                             </option>
                                         @endforeach
@@ -189,46 +190,31 @@
 
                         <h6 class="fw-bold mb-3">Lampiran</h6>
 
-                        @if ($isEdit && $pengajuan->lampiran->isNotEmpty())
-                            <div class="mb-4">
-                                <small class="text-muted d-block mb-2">Lampiran saat ini:</small>
-                                @foreach ($pengajuan->lampiran as $lampiran)
-                                    <div class="d-flex align-items-center gap-2 mb-1">
-                                        <span class="badge bg-dark">{{ $lampiran->jenis_lampiran->value }}</span>
-                                        <a href="{{ route('portal.pengajuan.lampiran', [$pengajuan, $lampiran]) }}"
-                                            target="_blank" class="btn btn-sm btn-light">
-                                            <i class="material-icons">visibility</i> Lihat
-                                        </a>
-                                    </div>
-                                @endforeach
-                            </div>
-                        @endif
-
                         <div class="row g-3">
-                            <div class="col-md-6">
-                                <label for="lampiran_ktp" class="form-label {{ $isEdit ? '' : 'required' }}">KTP</label>
-                                <input type="file" name="lampiran_ktp" id="lampiran_ktp" accept=".jpg,.jpeg,.png,.pdf"
-                                    class="form-control @error('lampiran_ktp') is-invalid @enderror"
-                                    {{ $isEdit ? '' : 'required' }}>
-                                @if ($isEdit)
-                                    <small class="text-muted">Biarkan kosong jika tidak ingin mengubah.</small>
-                                @endif
-                                @error('lampiran_ktp')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-                            <div class="col-md-6">
-                                <label for="lampiran_kk" class="form-label {{ $isEdit ? '' : 'required' }}">Kartu Keluarga (KK)</label>
-                                <input type="file" name="lampiran_kk" id="lampiran_kk" accept=".jpg,.jpeg,.png,.pdf"
-                                    class="form-control @error('lampiran_kk') is-invalid @enderror"
-                                    {{ $isEdit ? '' : 'required' }}>
-                                @if ($isEdit)
-                                    <small class="text-muted">Biarkan kosong jika tidak ingin mengubah.</small>
-                                @endif
-                                @error('lampiran_kk')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
+                            @foreach (JenisLampiran::cases() as $jenis)
+                                @php
+                                    $field = 'lampiran_' . strtolower($jenis->value);
+                                    $path = $penduduk->pathBerkas($jenis);
+                                @endphp
+                                <div class="col-md-6">
+                                    <label for="{{ $field }}" class="form-label {{ $path ? '' : 'required' }}">{{ $jenis->label() }}</label>
+                                    <input type="file" name="{{ $field }}" id="{{ $field }}"
+                                        accept=".jpg,.jpeg,.png,.pdf"
+                                        class="form-control @error($field) is-invalid @enderror"
+                                        {{ $path ? '' : 'required' }}>
+                                    @if ($path)
+                                        <small class="text-muted d-block mt-1">
+                                            Sudah tersimpan.
+                                            <a href="{{ route('portal.berkas.show', $jenis->value) }}" target="_blank">Lihat</a>
+                                        </small>
+                                    @else
+                                        <small class="text-muted d-block mt-1">Belum ada, wajib diunggah.</small>
+                                    @endif
+                                    @error($field)
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            @endforeach
                         </div>
 
                         <div class="d-flex mt-5 gap-2">
@@ -275,10 +261,10 @@
                         maxlength: 255
                     },
                     lampiran_ktp: {
-                        required: {{ $isEdit ? 'false' : 'true' }}
+                        required: {{ $penduduk->ktp_path ? 'false' : 'true' }}
                     },
                     lampiran_kk: {
-                        required: {{ $isEdit ? 'false' : 'true' }}
+                        required: {{ $penduduk->kk_path ? 'false' : 'true' }}
                     }
                 },
                 messages: {

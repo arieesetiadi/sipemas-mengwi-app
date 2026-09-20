@@ -10,11 +10,9 @@ use App\Mail\PengajuanDitolak;
 use App\Mail\PengajuanDiverifikasi;
 use App\Mail\PengajuanSelesai;
 use App\Models\JenisSurat;
-use App\Models\Lampiran;
 use App\Models\PengajuanSurat;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Storage;
 
 class PengajuanSuratController extends Controller
 {
@@ -34,7 +32,6 @@ class PengajuanSuratController extends Controller
         $pengajuan->load([
             'penduduk.banjar',
             'jenisSurat',
-            'lampiran',
             'diverifikasiOleh',
             'ditolakOleh',
             'disetujuiOleh',
@@ -125,14 +122,6 @@ class PengajuanSuratController extends Controller
         Mail::to($pengajuan->penduduk->email)->send(new PengajuanDitolak($pengajuan));
 
         return back()->with('success', 'Pengajuan ditolak.');
-    }
-
-    public function lampiran(PengajuanSurat $pengajuan, Lampiran $lampiran)
-    {
-        abort_unless($lampiran->pengajuan_surat_id === $pengajuan->id, 404);
-        abort_unless(Storage::disk('local')->exists($lampiran->file_path), 404);
-
-        return response()->file(Storage::disk('local')->path($lampiran->file_path));
     }
 
     private function isPimpinan(): bool

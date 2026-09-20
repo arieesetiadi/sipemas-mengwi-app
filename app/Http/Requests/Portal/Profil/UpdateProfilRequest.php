@@ -4,6 +4,7 @@ namespace App\Http\Requests\Portal\Profil;
 
 use App\Enums\Agama;
 use App\Enums\JenisKelamin;
+use App\Enums\StatusPerkawinan;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -48,7 +49,10 @@ class UpdateProfilRequest extends FormRequest
             'tanggal_lahir' => ['required', 'date', 'before:today'],
             'jenis_kelamin' => ['required', Rule::in(JenisKelamin::values())],
             'agama' => ['required', Rule::in(Agama::values())],
+            'status_perkawinan' => ['required', Rule::in(StatusPerkawinan::values())],
             'pekerjaan' => ['required', 'string', 'max:255'],
+            'lampiran_ktp' => ['nullable', 'file', 'mimes:jpg,jpeg,png,pdf', 'max:2048'],
+            'lampiran_kk' => ['nullable', 'file', 'mimes:jpg,jpeg,png,pdf', 'max:2048'],
             'password' => ['sometimes', 'nullable', 'string', 'min:8'],
         ];
     }
@@ -79,8 +83,14 @@ class UpdateProfilRequest extends FormRequest
             'jenis_kelamin.in' => 'Jenis kelamin yang dipilih tidak valid.',
             'agama.required' => 'Agama wajib dipilih.',
             'agama.in' => 'Agama yang dipilih tidak valid.',
+            'status_perkawinan.required' => 'Status perkawinan wajib dipilih.',
+            'status_perkawinan.in' => 'Status perkawinan yang dipilih tidak valid.',
             'pekerjaan.required' => 'Pekerjaan wajib diisi.',
             'pekerjaan.max' => 'Pekerjaan maksimal 255 karakter.',
+            'lampiran_ktp.mimes' => 'KTP harus berupa JPG, PNG, atau PDF.',
+            'lampiran_ktp.max' => 'Ukuran KTP maksimal 2MB.',
+            'lampiran_kk.mimes' => 'KK harus berupa JPG, PNG, atau PDF.',
+            'lampiran_kk.max' => 'Ukuran KK maksimal 2MB.',
             'password.min' => 'Kata sandi minimal 8 karakter.',
         ];
     }

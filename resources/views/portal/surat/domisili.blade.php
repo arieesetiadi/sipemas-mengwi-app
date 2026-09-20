@@ -39,7 +39,7 @@
     <tr><td class="kiri">Nama</td><td>: {{ $penduduk->nama }}</td></tr>
     <tr><td class="kiri">Tempat, Tanggal Lahir</td><td>: {{ $ttl }}</td></tr>
     <tr><td class="kiri">Jenis Kelamin</td><td>: {{ JenisKelamin::from($penduduk->jenis_kelamin)->label() }}</td></tr>
-    <tr><td class="kiri">Status Perkawinan</td><td>: {{ $pengajuan->status_perkawinan?->value ?? '-' }}</td></tr>
+    <tr><td class="kiri">Status Perkawinan</td><td>: {{ $penduduk->status_perkawinan?->value ?? '-' }}</td></tr>
     <tr><td class="kiri">Agama</td><td>: {{ $penduduk->agama }}</td></tr>
     <tr><td class="kiri">Pekerjaan</td><td>: {{ $penduduk->pekerjaan }}</td></tr>
     <tr><td class="kiri">Alamat</td><td>: {{ $penduduk->alamat }}</td></tr>

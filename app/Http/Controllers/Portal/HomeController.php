@@ -12,7 +12,7 @@ class HomeController extends Controller
     {
         $jenisSurat = JenisSurat::orderBy('label')->get();
 
-        $pengajuan = PengajuanSurat::with(['jenisSurat', 'ditolakOleh'])
+        $pengajuan = PengajuanSurat::with(['penduduk', 'jenisSurat', 'ditolakOleh'])
             ->milikPenduduk(auth('portal')->id())
             ->latest()
             ->get();

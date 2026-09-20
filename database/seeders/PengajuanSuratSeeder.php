@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Enums\Role;
-use App\Enums\StatusPerkawinan;
 use App\Enums\StatusSurat;
 use App\Models\Admin;
 use App\Models\JenisSurat;
@@ -28,9 +27,7 @@ class PengajuanSuratSeeder extends Seeder
         $pimpinan = Admin::whereRelation('role', 'label', Role::Sekretaris->value)->first();
 
         $detailPerJenis = [
-            'SKD' => [
-                'status_perkawinan' => StatusPerkawinan::Kawin,
-            ],
+            'SKD' => [],
             'SKU' => [
                 'nama_usaha' => 'Warung Sembako Berkah',
                 'lokasi_usaha' => 'Banjar Serangan, Mengwi',

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\System;
 
+use App\Enums\JenisLampiran;
 use App\Enums\Role;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\System\Penduduk\StorePendudukRequest;
@@ -9,6 +10,7 @@ use App\Http\Requests\System\Penduduk\UpdatePendudukRequest;
 use App\Models\Banjar;
 use App\Models\Penduduk;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Storage;
 
 class PendudukController extends Controller
 {
@@ -55,5 +57,14 @@ class PendudukController extends Controller
         $penduduk->update(['is_active' => ! $penduduk->is_active]);
 
         return back()->with('success', 'Status penduduk berhasil diubah.');
+    }
+
+    public function berkas(Penduduk $penduduk, string $jenis)
+    {
+        $path = $penduduk->pathBerkas(JenisLampiran::from($jenis));
+
+        abort_unless($path && Storage::disk('local')->exists($path), 404);
+
+        return response()->file(Storage::disk('local')->path($path));
     }
 }

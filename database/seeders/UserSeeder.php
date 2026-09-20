@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Enums\Agama;
 use App\Enums\JenisKelamin;
 use App\Enums\Role as RoleEnum;
+use App\Enums\StatusPerkawinan;
 use App\Models\Admin;
 use App\Models\Banjar;
 use App\Models\Penduduk;
@@ -56,6 +57,7 @@ class UserSeeder extends Seeder
                 'tanggal_lahir' => '1990-01-01',
                 'jenis_kelamin' => JenisKelamin::LakiLaki->value,
                 'agama' => Agama::Hindu->value,
+                'status_perkawinan' => StatusPerkawinan::Kawin->value,
                 'pekerjaan' => 'Wiraswasta',
             ]
         );
@@ -69,6 +71,7 @@ class UserSeeder extends Seeder
                 'tempat_lahir' => 'Mengwi',
                 'tanggal_lahir' => '1985-03-12',
                 'jenis_kelamin' => JenisKelamin::LakiLaki->value,
+                'status_perkawinan' => StatusPerkawinan::Kawin->value,
                 'pekerjaan' => 'Petani',
             ],
             [
@@ -79,6 +82,7 @@ class UserSeeder extends Seeder
                 'tempat_lahir' => 'Mengwi',
                 'tanggal_lahir' => '1990-07-25',
                 'jenis_kelamin' => JenisKelamin::Perempuan->value,
+                'status_perkawinan' => StatusPerkawinan::Kawin->value,
                 'pekerjaan' => 'Pedagang',
             ],
             [
@@ -89,6 +93,7 @@ class UserSeeder extends Seeder
                 'tempat_lahir' => 'Mengwi',
                 'tanggal_lahir' => '1988-11-02',
                 'jenis_kelamin' => JenisKelamin::LakiLaki->value,
+                'status_perkawinan' => StatusPerkawinan::BelumKawin->value,
                 'pekerjaan' => 'Karyawan Swasta',
             ],
             [
@@ -99,6 +104,7 @@ class UserSeeder extends Seeder
                 'tempat_lahir' => 'Mengwi',
                 'tanggal_lahir' => '1992-05-18',
                 'jenis_kelamin' => JenisKelamin::Perempuan->value,
+                'status_perkawinan' => StatusPerkawinan::Kawin->value,
                 'pekerjaan' => 'Guru',
             ],
             [
@@ -109,6 +115,7 @@ class UserSeeder extends Seeder
                 'tempat_lahir' => 'Mengwi',
                 'tanggal_lahir' => '1987-09-30',
                 'jenis_kelamin' => JenisKelamin::LakiLaki->value,
+                'status_perkawinan' => StatusPerkawinan::CeraiHidup->value,
                 'pekerjaan' => 'Wiraswasta',
             ],
         ];

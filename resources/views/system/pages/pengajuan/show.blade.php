@@ -1,6 +1,7 @@
 @extends('system.layouts.layout')
 
 @use('App\Enums\JenisKelamin')
+@use('App\Enums\JenisLampiran')
 @use('App\Enums\StatusSurat')
 @use('Illuminate\Support\Carbon')
 
@@ -129,7 +130,7 @@
                             @if ($jenisSurat && $jenisSurat->kode === 'SKD')
                                 <div class="mb-2">
                                     <small class="text-muted d-block">Status Perkawinan</small>
-                                    <strong>{{ $pengajuan->status_perkawinan?->value ?? '-' }}</strong>
+                                    <strong>{{ $penduduk?->status_perkawinan?->value ?? '-' }}</strong>
                                 </div>
                             @elseif ($jenisSurat && $jenisSurat->kode === 'SKU')
                                 <div class="mb-2">
@@ -170,10 +171,13 @@
                     <div class="card">
                         <div class="card-body">
                             <h6 class="fw-bold mb-3">Lampiran</h6>
-                            @forelse ($pengajuan->lampiran as $lampiran)
+                            @php
+                                $lampiran = collect(JenisLampiran::cases())->filter(fn ($jenis) => $penduduk?->pathBerkas($jenis));
+                            @endphp
+                            @forelse ($lampiran as $jenis)
                                 <div class="d-flex justify-content-start gap-3 align-items-center mb-3">
-                                    <span>{{ $lampiran->jenis_lampiran->value }}</span>
-                                    <a href="{{ route('system.pengajuan.lampiran', [$pengajuan, $lampiran]) }}"
+                                    <span>{{ $jenis->label() }}</span>
+                                    <a href="{{ route('system.penduduk.berkas', [$penduduk, $jenis->value]) }}"
                                         target="_blank" class="btn btn-sm btn-light">
                                         <i class="material-icons">visibility</i> Lihat
                                     </a>
