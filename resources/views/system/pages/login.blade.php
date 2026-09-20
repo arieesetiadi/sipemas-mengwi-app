@@ -34,11 +34,11 @@
                 <div class="auth-credentials m-b-xxl">
                     <label for="email" class="form-label">Alamat Email</label>
                     <input type="email" name="email" class="form-control m-b-md" id="email"
-                        placeholder="contoh@desa.test" value="{{ old('email', 'staf@desa.test') }}" required autofocus>
+                        placeholder="contoh@desa.test" value="{{ old('email') }}" required autofocus>
 
                     <label for="password" class="form-label">Kata Sandi</label>
                     <input type="password" name="password" class="form-control" id="password"
-                        placeholder="&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;" value="staf" required>
+                        placeholder="&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;" required>
                 </div>
 
                 <div class="auth-submit">

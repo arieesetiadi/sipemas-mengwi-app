@@ -35,13 +35,13 @@
                     <div class="m-b-md">
                         <label for="email" class="form-label required">Alamat Email</label>
                         <input type="email" name="email" class="form-control" id="email"
-                            placeholder="contoh@desa.test" value="{{ old('email', 'penduduk@desa.test') }}" required autofocus>
+                            placeholder="contoh@desa.test" value="{{ old('email') }}" required autofocus>
                     </div>
 
                     <div>
                         <label for="password" class="form-label required">Kata Sandi</label>
                         <input type="password" name="password" class="form-control" id="password"
-                            placeholder="&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;" value="penduduk" required>
+                            placeholder="&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;" required>
                     </div>
                 </div>
 
